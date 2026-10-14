@@ -1,0 +1,33 @@
+{
+  "business_fields_preserved": "numeric IDs/FKs, states, amounts, dates and edge-case references",
+  "counts": {
+    "asignaciones_staff": 27,
+    "asistentes": 600,
+    "compras": 1849,
+    "entradas": 3899,
+    "eventos": 9,
+    "fases_precio": 57,
+    "ingresos": 1762,
+    "organizadores": 3,
+    "puertas": 28,
+    "reservas": 320,
+    "staff": 12,
+    "transferencias": 176,
+    "usuarios_administrativos": 1,
+    "zonas": 19
+  },
+  "operational_uuid_policy": "deterministic UUIDv5 from table, numeric ID and field name; original values discarded",
+  "output_bytes": 2354984,
+  "output_sha256": "15775bef5da8b7ca6f58cba095bd81c017f621c7a9e4afb9d46acb7126834839",
+  "password_fields_removed": 616,
+  "sanitizer_version": 1,
+  "source_sha256": "1682050bd01edf48bd269151885d0b5872b3fd1c903b5e0d7e2f6a8c3f0d34b9",
+  "synthetic_fields_replaced": {
+    "client_scan_id": 1762,
+    "codigo": 9,
+    "email": 616,
+    "idempotency_key": 1849,
+    "nombre": 672,
+    "recinto": 9
+  }
+}
