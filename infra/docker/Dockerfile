@@ -16,7 +16,10 @@ RUN npm run build -w @hypernova/contracts && npm run build -w @hypernova/api && 
 FROM build AS api
 COPY infra/data infra/data
 COPY infra/docker/api-entrypoint.sh /app/api-entrypoint.sh
-RUN mkdir -p /app/runtime && chmod +x /app/api-entrypoint.sh
+RUN mkdir -p /app/runtime \
+    && chmod -R a+rX /app/apps /app/packages /app/node_modules /app/infra \
+    && chmod a+r /app/package*.json \
+    && chmod 755 /app/api-entrypoint.sh
 WORKDIR /app/apps/api
 EXPOSE 3000
 ENTRYPOINT ["/app/api-entrypoint.sh"]
