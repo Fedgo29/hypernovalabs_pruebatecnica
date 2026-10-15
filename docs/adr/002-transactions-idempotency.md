@@ -1,26 +1,15 @@
-# ADR 002 — Inventario, límite por cuenta e idempotencia en SQL
+# ADR 002 — Inventario, límite de cuenta e idempotencia SQL
 
-**Estado:** propuesta, pendientes reglas exactas del enunciado.
+**Estado:** adoptada; implementada en migración core y CommerceService. Evidencias de carreras en QA.
 
-**Contexto:** 200 compradores por 50 entradas, reintentos simultáneos, expiración
-tras reinicio y pagos tardíos deben mantener coherencia.
+**Contexto:** 200 compradores por 50 entradas, reintentos, límite por evento, vencimiento tras reinicio y cupo recuperado por reembolso deben ser coherentes.
 
-**Alternativas:** mutex en memoria; inventario eventualmente consistente;
-aislamiento serializable; bloqueos por fila con restricciones y actualizaciones
-condicionales.
+**Alternativas:** mutex en memoria; consistencia eventual; aislamiento serializable general; bloqueos por fila y restricciones SQL.
 
-**Decisión:** proponer transacciones PostgreSQL con filas de inventario y uso por
-cuenta, restricciones de capacidad/no negatividad y clave idempotente única con
-hash del payload. Expiraciones persistentes; precio capturado del servidor.
-Proponer pago tardío con reembolso simulado idempotente sin emitir entrada.
+**Decisión:** `READ COMMITTED`, bloquear zona y contador usuario/evento, actualización condicional de capacidad y CHECK no negativos/suma≤aforo. Idempotencia mediante advisory lock por actor/operación/clave más PK, fingerprint y respuesta SQL. TTL 600 segundos; expiraciones persistidas, barrido y recuperación en caminos de compra. Pago tardío registra reembolso simulado una vez, sin emisión. Reembolso/anulación devuelve cupo una vez; límite permanece asociado al comprador original al transferir.
 
-**Justificación:** funciona con reinicios y varias instancias; claves diferentes
-no eluden el límite. Una misma clave no produce dos cobros ni tickets.
+**Justificación:** válido con reinicios y múltiples procesos. Claves diferentes no eluden límite ni duplican cargo por reserva. Precio se fija en servidor al reservar. Todas las operaciones simuladas se confirman juntas.
 
-**Riesgos:** deadlocks y contención; elegir orden único y reintentos acotados por
-SQLSTATE. La devolución de cupo y el cómputo de titular/comprador son reglas aún
-desconocidas. No hacer llamadas a una pasarela dentro de una transacción larga.
+**Riesgos:** deadlocks/contención; orden documentado en modelo, reintentos acotados para SQLSTATE 40P01/40001. No introducir llamadas externas dentro de callbacks reintentables. INTEGER requiere límites de importe. Límite de compras no limita entradas recibidas mediante transferencia: conservar esta semántica explícita.
 
-**Validación:** pendientes carrera 200/50, límite concurrente, misma clave/payload
-distinto, recuperación tras reinicio y carreras pago/expiración/reembolso/ingreso.
-No hay resultados de carga ni tiempos publicados.
+**Validación:** carrera 200/50 con reconciliación SQL, misma clave concurrente/payload distinto, claves diferentes sobre una reserva, vencimiento/reinicio, reembolso doble y carreras pago/expiración/transferencia/ingreso. Los comandos, ventas, p50/p95 y errores se publican solo después de ejecución en QA.

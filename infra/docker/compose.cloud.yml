@@ -1,0 +1,28 @@
+# Adaptación del proxy y CA de confianza de esta máquina de nube.
+# No guarda certificados ni valores de credenciales en Git ni en capas de imagen.
+services:
+  initialize:
+    build:
+      network: host
+      extra_hosts:
+        - "${HYPERNOVA_PROXY_HOST:?}:${HYPERNOVA_PROXY_IP:?}"
+      secrets:
+        - cloud_ca
+  api:
+    build:
+      network: host
+      extra_hosts:
+        - "${HYPERNOVA_PROXY_HOST:?}:${HYPERNOVA_PROXY_IP:?}"
+      secrets:
+        - cloud_ca
+  admin:
+    build:
+      network: host
+      extra_hosts:
+        - "${HYPERNOVA_PROXY_HOST:?}:${HYPERNOVA_PROXY_IP:?}"
+      secrets:
+        - cloud_ca
+
+secrets:
+  cloud_ca:
+    file: ${NODE_EXTRA_CA_CERTS:?El entorno de nube debe inyectar su CA de confianza}

@@ -1,51 +1,49 @@
-# Seguridad y riesgos — diseño inicial
+# Seguridad y límites operativos
 
-**Estado:** análisis de amenazas; controles de aplicación no implementados.
+**Estado:** controles presentes en código y SQL. Una revisión estática no demuestra todos los escenarios: consultar resultados ejecutados en `docs/qa/`, distinguiendo pendiente y probado.
 
-| Riesgo | Control propuesto | Comprobación pendiente |
+## Amenazas y controles
+
+| Riesgo | Control implementado | Verificación requerida |
 |---|---|---|
-| Sobreventa/límite eludido con paralelismo | DB, bloqueos, restricciones, contador usuario/evento | 200/50 y límite concurrente |
-| Cobro/ticket duplicado por retry | Claves únicas por actor/operación y hash de payload | Retries simultáneos y payload diferente |
-| Precio o rol impuesto por cliente | DTO estricto, precio del servidor, autorización por recurso | Precio manipulado y organizador ajeno |
-| Robo/reuso de sesión | Hash de contraseña, refresh hasheado y rotativo, familia revocable | Logout, replay, expiración y carrera refresh |
-| Abuso de login/compras | Rate limit documentado y probado; no confiar en cabeceras proxy arbitrarias | Umbrales, reinicio y topología real |
-| QR falsificado | Firma del emisor y del titular, codificación canónica, claves públicas confiables | Firmas alteradas, otra clave/evento |
-| Captura antigua | Ventana temporal corta y tolerancia explícita | Reloj dentro/fuera de tolerancia |
-| Transferencia/reembolso/ingreso concurrentes | Bloquear ticket, releer estado, revocar versión | Carreras y rechazo de entrada usada |
-| Doble ingreso offline | Rechazo local + arbitraje central + incidente persistente | Dos puertas desconectadas |
-| Manipulación de sync | Autenticación dispositivo/staff, scope, UUID/hash, límites batch | Evento ajeno y UUID reutilizado |
-| Alteración de auditoría | Inserción transaccional; rol app sin UPDATE/DELETE ni DDL | Intentar alterar desde credencial app |
-| Exposición del dataset | Original externo, salida agregada, no copiar secretos ni PII | Revisión Git y salida del auditor |
+| Sobreventa/límite bajo paralelismo | Bloqueos DB, CHECK y contador usuario/evento | 200/50 y reconciliación SQL; límite concurrente |
+| Compra/cargo duplicado | Advisory lock + PK idempotente, hash payload, ledger único | Misma clave concurrente, distinto payload y distintas claves |
+| Precio o rol impuestos por cliente | Precio de fase del servidor; registro siempre asistente; autorización por recurso | Precio manipulado y organizador ajeno |
+| Robo/replay de sesión | scrypt con salt; refresh SHA-256, rotación y revocación de familia | Logout, replay y carrera refresh/logout |
+| Token de acceso tras revocación | JWT HS256 con algoritmo/issuer/audience fijos y sesión activa consultada en DB | Acceso después de logout/refresh |
+| Abuso de login/compras | Rate limit por instancia: login 300/min/IP, registro 10; compras 100/min/usuario | Umbral/429; proxy real y limitación horizontal pendiente |
+| QR falso | Firmas Ed25519 emisor/titular, formato estricto y claves bootstrap | Otra clave, firma alterada, evento/zona ajenos |
+| Captura antigua | Slot 15 s, solo actual/anterior | Captura 60 s y bordes de slot/reloj |
+| Transferencia/reembolso/ingreso simultáneo | Bloqueo ticket, relectura de estado, revocación versionada | Carreras y reembolso de usada |
+| Doble ingreso desconectado | Rechazo SQLite local; admisión central única e incidente | Dos puertas y replay persistente |
+| Sync alterado | Staff/dispositivo/scope, UUID/hash, batch≤500 | Evento ajeno, dispositivo revocado, UUID cambiado |
+| Auditoría alterada desde aplicación | Rol runtime sin UPDATE/DELETE; triggers append-only | Intentos SQL con rol runtime |
+| Dataset expuesto | Copia sanitizada; original externo; passwords nuevos | Auditoría sanitización y revisión de Git |
 
-## Límites que no se pueden eliminar con criptografía
+Contraseñas se derivan con scrypt N=32768, r=8, p=1 y salt aleatorio de 24 bytes. Refresh aleatorio solo se persiste hasheado; acceso dura hasta 15 minutos y familia hasta 7 días. Refresh consumido revoca sucesores al detectar replay; la revocación se confirma antes de devolver error. Dos refresh simultáneos pueden cerrar familia deliberadamente: los clientes deben serializar renovación.
 
-- Sin comunicación entre puertas no puede impedirse todo doble ingreso físico.
-  El servidor impone un solo ingreso **lógico** y conserva ambos intentos.
-- Escáner desconectado no conoce revocaciones nuevas. Se requiere política de
-  antigüedad máxima de snapshot; sin enunciado no se inventa su duración.
-- Una captura dentro de una ventana todavía vigente puede reproducirse. La
-  rotación reduce tiempo de exposición, no identifica por sí sola al portador.
-- Firma válida no demuestra que el reloj o la base SQLite no hayan sido alterados.
-  Se requiere sincronización del reloj, tolerancia y advertencias operativas.
-- Dispositivo perdido/comprometido exige revocación y reenrolamiento. El titular
-  y el emisor usan claves distintas; nunca se distribuye la privada del emisor.
-- Append-only desde el rol de aplicación no impide alteraciones por superusuario
-  de PostgreSQL. Restringir credenciales, backups y administración por separado.
+## Confianza y secretos
 
-## Manejo de secretos y datos aportados
+JWT, clave privada emisora y contraseña demo se generan aleatoriamente fuera de Git o llegan por variables. Compose guarda secretos en volumen privado y mantiene un rol owner separado del rol runtime. No registrar tokens, claves, passwords ni URLs de DB con credenciales. Datos originales con nombre/email/password no se publican; la semilla tiene identidades sanitizadas y password runtime nuevo. No atribuir carácter ficticio a los originales sin evidencia.
 
-No se han pedido tokens ni se han publicado credenciales. Acceso read-only a Git
-funciona con autenticación existente del entorno. El dataset contiene `password`,
-`nombre` y `email`; no se ha confirmado que todos sean ficticios. El original
-permanece fuera del repositorio y no se usa directamente como semilla pública.
+La privada emisora nunca se distribuye a las apps. SecureStore conserva semilla del titular; Expo Crypto genera 32 bytes aleatorios. SecureStore no acredita hardware ni evita extracción en dispositivo comprometido. Pérdida de teléfono exige cambiar clave/revocar versión mediante sesión autorizada. Kid identifica la clave pública; su bootstrap debe usar TLS y origen confiable en producción. Desarrollo HTTP local no ofrece confidencialidad ni protección de intermediario y no debe exponerse como despliegue público.
 
-Futura semilla debe generar identidades de demostración y hashes nuevos; no
-conservar passwords históricos ni direcciones originales. JWT, clave del emisor
-y claves de dispositivos se generan o suministran de forma segura fuera de Git.
-`.env.example` incluirá solo nombres y ejemplos no secretos cuando existan
-variables reales de la aplicación. No se crea configuración ficticia de momento.
+Clave desconocida, campos extra, codificación ambigua, firma inválida y QR con clave autoproclamada no otorgan confianza. El tamaño de token se limita a 8192 caracteres. El QR lleva dos firmas y puede ser denso: medir lectura en cámara real y no prometer usabilidad por prueba Node.
 
-Las claves públicas del emisor deben instalarse por un canal autenticado y
-soportar rotación por `kid`; aceptar una clave incluida por el propio QR sería
-una vulnerabilidad. Detalles de enrolamiento y recuperación se fijarán antes
-del spike móvil, junto con prueba de posesión de la clave del receptor.
+## Límites del modo offline
+
+- Sin comunicación entre puertas no puede impedirse todo doble ingreso físico. Se impone un solo ingreso **lógico** y se conservan intentos/incidente al sincronizar.
+- Escáner desconectado ignora revocaciones nuevas. Transferencia, cambio de clave, devolución o anulación se conocen al descargar revocaciones; no prometen invalidación inmediata offline.
+- Una captura válida puede reproducirse dentro del slot actual/anterior, menos de 30 segundos. Rotación no identifica físicamente al portador ni autentica una cámara.
+- El reloj y el SQLite de un dispositivo comprometido no son confiables. La verificación en sync usa tiempo declarado y lo conserva como no confiable; criptografía no demuestra cuándo ocurrió el ingreso.
+- Backend limita antigüedad de intento por defecto a 72 horas y futuro declarado a 60 segundos, además del turno. Cliente calibra con `serverTime`, rechaza desfase superior a 60 segundos al preparar/sincronizar y bloquea snapshot vencido tanto en UI como en persistencia. Usa tiempo declarado/calibrado y no demuestra integridad del reloj cuando queda offline; validar la política en dispositivo.
+- Reembolso antes de llegada de un acceso offline puede devolver cupo aunque haya ocurrido entrada física. La reconciliación debe conservar el conflicto, sin borrar historia ni pretender recuperar el acceso físico.
+- Revocar dispositivo/staff bloquea sync autorizado posterior; recuperar evidencia pendiente de un dispositivo revocado requiere procedimiento administrativo, no borrar su cola.
+
+## Protección de evidencia y despliegue
+
+Intentos, admisiones, incidentes y auditoría central no pueden actualizarse/eliminarse con el rol runtime. El superusuario o propietario de DB aún puede cambiar triggers/roles; separar administración, mantener backups y controlar esos accesos. Esta entrega no afirma evidencia con sellado externo ni resistencia a un administrador de DB malicioso.
+
+El bootstrap de Compose ejecuta migraciones desde el proceso API con credenciales owner. El volumen de secretos montado incluye esa credencial: separar roles SQL no aísla un proceso API comprometido que pueda leerla. Un despliegue con ese modelo de amenaza requiere un job de migración separado y retirar credenciales/volumen owner del runtime; borrar variables tras bootstrap por sí solo no elimina el acceso al archivo montado.
+
+Rate limiting en memoria se reinicia con el proceso y se divide entre instancias. Concurrencia comercial depende de SQL y mantiene sus controles pese a ese límite. Antes de desplegar públicamente: TLS, orígenes CORS definidos, operación de rotación/recuperación de claves, límites de proxy y revisión de retención de PII/evidencia. Estos son requisitos operativos documentados, no una declaración de validación de producción.

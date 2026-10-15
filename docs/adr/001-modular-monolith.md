@@ -1,21 +1,15 @@
 # ADR 001 — Monolito modular y autoridad en PostgreSQL
 
-**Estado:** propuesta, pendiente de enunciado.
+**Estado:** adoptada; implementación presente. Evidencias ejecutadas en QA.
 
-**Contexto:** no hay código previo; dirección requiere API NestJS, PostgreSQL,
-Expo y portal separado, en un plazo de cuatro días.
+**Contexto:** enunciado recibido y dirección requieren NestJS, PostgreSQL, Expo y portal separado; plazo de referencia cuatro días, sin lógica previa que preservar.
 
-**Alternativas:** microservicios por dominio; monolito sin límites; monolito
-modular con worker del mismo código.
+**Alternativas:** microservicios por dominio; monolito sin límites; monolito modular con SQL directo.
 
-**Decisión:** proponer monolito modular, PostgreSQL único para estado crítico,
-portal React en contenedor propio y Expo para ambos modos. No introducir Redis.
+**Decisión:** NestJS 11.2.7 con `pg` 8.16.3, PostgreSQL 16, portal React 19.1.0/Vite 7.3.7 y Expo 54.0.37/RN 0.81.5. Workspace npm, TypeScript estricto y contratos compilados CommonJS. Expiración dentro de la API. Sin Redis.
 
-**Justificación:** permite transacciones locales de inventario, pagos, accesos y
-auditoría, menos despliegues y contratos internos claros.
+**Justificación:** transacciones locales unen inventario, pago simulado, tickets y evidencia; SQL explícito facilita revisar bloqueo y unicidades. Portal tiene despliegue separado sin convertir los dominios en servicios remotos.
 
-**Riesgos:** consultas del portal pueden competir con ventas; separar consultas,
-paginar e indexar según EXPLAIN. El worker debe coordinarse mediante DB.
+**Riesgos:** contención con consultas administrativas; paginar e indexar con EXPLAIN. Caché de disponibilidad de 500 ms por instancia es informativa; compra revalida DB. Rate limiting en memoria no agrega varias instancias. Barrido de un segundo requiere SQL recuperable.
 
-**Validación:** pendiente de compilación estricta, pruebas con PostgreSQL y
-arranque desde clon limpio. Docker disponible no valida aún la aplicación.
+**Validación:** compilar contratos/API/portal y exportar Metro móvil; ejecutar pruebas reales PostgreSQL y arranque de Compose desde clon limpio. Consultar resultados efectivos en `docs/qa/`; compilación no acredita funcionamiento móvil ni despliegue limpio.

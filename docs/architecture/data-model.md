@@ -1,92 +1,73 @@
-# Modelo propuesto y contratos transaccionales
+# Modelo de datos y contratos transaccionales
 
-**No hay migraciones ni tablas creadas.** Este modelo identifica invariantes y
-pruebas antes de implementar; el dataset se conservará como entrada externa,
-no como esquema normativo. Tipos concretos y estados se contrastarán con el
-enunciado.
+**Estado:** esquema implementado en `apps/api/migrations/001_core.sql` y `002_access.sql`. Esta página describe SQL y servicios; resultados ejecutados en `docs/qa/`.
 
-## Entidades y restricciones
+## Entidades
 
-| Entidad propuesta | Restricciones y datos importantes |
+| Tabla | Regla persistente |
 |---|---|
-| users / sessions | Identidad, rol, hash de contraseña; refresh hasheado, familia, expiración y revocación |
-| events / zones / gates | Organizador propietario; zona y puerta del mismo evento; aforo no negativo |
-| price_phases | Zona, intervalo temporal, precio entero; evitar solapamientos ambiguos |
-| staff_assignments / devices | Alcance por evento/puerta, revocación de dispositivo, última sync |
-| inventory | Por zona: capacidad, reservadas y vendidas; `CHECK >= 0` y suma ≤ capacidad |
-| account_event_usage | Fila por usuario/evento para serializar el límite; semántica pendiente |
-| reservations | Usuario, zona, cantidad, precio/fase capturados, expiración, estado, clave |
-| idempotency_operations | `UNIQUE(actor, operation, key)`, hash canónico del payload, resultado durable |
-| payments / refunds | Operación/reserva única donde aplique; importes enteros, estado, actor/motivo |
-| purchases / tickets | Emisión única por unidad comprada; titular, versión de credencial, estado |
-| transfers | Emisor/receptor, estados y tiempos; a lo sumo una pendiente por entrada |
-| revocations | Secuencia central monotónica, ticket/version, motivo, momento |
-| scan_attempts | UUID global único, dispositivo, payload/hash, resultado local y central separados |
-| admissions | `UNIQUE(event_id, ticket_id)`, intento central vencedor y momento de arbitraje |
-| incidents / audit_log | Conflictos preservados; autor/motivo/antes/después; sin UPDATE/DELETE por rol app |
+| users / sessions | ID TEXT, email único, rol validado; refresh hasheado, familia, expiración y revocación |
+| events / zones / gates | Organizador propietario; aforo positivo; scope de puerta/zona validado por API |
+| price_phases | Precio INTEGER en centésimos; intervalo válido; índice por zona/fechas |
+| staff_assignments | Un vínculo usuario/evento |
+| zones | Contadores no negativos y `sold_count + reserved_count <= capacity` |
+| account_inventory | PK usuario/evento; compras y reservas no negativas |
+| reservations | Cantidad, precio capturado, expiración y estado persistidos; índice parcial de activas |
+| purchases / tickets | Compra única por reserva; entrada por unidad; comprador/titular separados; versión positiva |
+| idempotency | PK usuario/operación/clave; fingerprint y respuesta JSONB |
+| payment_ledger | Únicos parciales: charge/reserva, late_refund/reserva, refund/ticket |
+| transfers | Índice parcial único impide dos pendientes por ticket |
+| revocations | BIGINT secuencial, ticket/versión/motivo; escritores serializados para cursor seguro |
+| scanner_devices / scanner_shifts | Scope evento/puerta, propietario, revocación, turnos y última sync |
+| scanner_attempts | PK UUID; hash, resultado local y central, tiempos y evidencia separados |
+| scanner_admissions | PK evento/ticket; intento ganador único |
+| scanner_incidents / audit_log | Append-only mediante triggers y permisos runtime |
+| seed_metadata / schema_migrations | Bootstrap idempotente; inaccesibles al rol aplicación |
 
-Importes en enteros de centésimos con límites explícitos de rango; no usar
-flotantes. Fechas con zona horaria en PostgreSQL; el servidor es autoridad para
-expiración y precio. IDs de importación necesitan namespace/tabla de mapeo para
-no confundir históricos con UUID del sistema.
+Usuarios importados usan `rol-id`; identidades nuevas usan UUID como TEXT. Otros IDs importados tienen namespaces `purchase-`, `ticket-`, etc. Eventos/zonas/fases/puertas mantienen IDs enteros. Ticket desconocido en intento no lleva FK: también se conserva el rechazo como evidencia.
 
-## Inventario y compras
+Importes INTEGER, sin flotantes. La suma debe caber en rango SQL de 2.147.483.647 centésimos; ampliar a BIGINT requiere adaptar serialización/límites. Fechas TIMESTAMPTZ. La semilla mantiene un desplazamiento temporal común y anchor persistente.
 
-Por zona, `disponibles = capacidad - reservadas - vendidas`. Reservar aumenta
-reservadas; pagar mueve la cantidad de reservadas a vendidas; expirar reduce
-reservadas una sola vez. El efecto de reembolsar sobre disponibilidad se fijará
-con el enunciado. Un ticket usado sigue contando para el aforo del evento.
+## Inventario y límite por cuenta
 
-Una transacción de reserva bloquea filas de inventario y uso por cuenta, relee
-sus valores, valida cantidad, precio, vigencia y límite, y persiste resultado y
-auditoría. Se propone `READ COMMITTED` con bloqueos explícitos y restricciones
-SQL; no basta consultar disponibilidad y escribir después. Una actualización
-condicional atómica es alternativa válida cuando evita separar validación y cambio.
+`disponibles = capacity - reserved_count - sold_count`.
 
-Todas las operaciones que toquen las mismas entidades deben seguir un orden
-de bloqueos único. El orden concreto se documentará junto al SQL de migraciones;
-expiración, pago, devolución y transferencia se prueban también contra ese orden.
-No se presupone que `SKIP LOCKED` o un mutex de proceso resuelvan las carreras.
+| Transición | Zona | Contador del comprador |
+|---|---|---|
+| Reservar | reservadas + cantidad | reservadas + cantidad |
+| Pagar | reservadas − cantidad; vendidas + cantidad | reservadas − cantidad; pagadas + cantidad |
+| Expirar/cancelar | reservadas − cantidad | reservadas − cantidad |
+| Reembolsar/anular | vendidas − 1 | pagadas − 1 |
+| Transferir/admitir | sin cambio | sin cambio |
 
-El worker selecciona vencidas persistidas, revalida bajo bloqueo y cambia estado
-e inventario en la misma transacción. Arranque recupera trabajo vencido. Reservar
-debe poder recuperar cupo vencido sin depender únicamente del intervalo del worker.
-No se utilizarán temporizadores en memoria como fuente de verdad.
+El límite cuenta reservas activas y entradas no devueltas del **comprador original** por evento. Transferir no libera artificialmente consumo de compra. No equivale a limitar todas las entradas recibidas por titular: cambiar esa regla exige bloquear también recepción de transferencias y actualizar los contadores.
 
-## Idempotencia y estados
+Se usa `READ COMMITTED`, bloqueos explícitos y restricciones SQL. Reserva bloquea zona, expira reservas y bloquea fila usuario/evento antes de evaluar límite y fase. Una actualización condicional protege capacidad. Precio se captura al reservar; el cliente no decide el cargo. Si fases se solapan, gana mayor `starts_at` y luego ID; el esquema actual no tiene exclusión SQL para solapamientos.
 
-La unicidad de la clave arbitra solicitudes concurrentes. Tras un conflicto de
-inserción se lee el resultado confirmado, no se procesa una segunda compra.
-Canonicalización excluye campos sin efecto y normaliza tipos de forma explícita;
-misma clave con distinto payload da conflicto. No se sustituye el resultado de
-una operación por un estado transitorio diferente al repetir la solicitud.
+El barrido y los caminos reserva/pago recuperan vencidas desde PostgreSQL; estado e inventario se cambian una vez en la misma transacción. Reiniciar no reinicia TTL ni pierde la obligación de liberar cupo.
 
-Pago simulado persistido + transición de reserva + emisión + auditoría pueden
-ser atómicos dentro de PostgreSQL. Si después se integra una pasarela real se
-necesitarán idempotencia externa y outbox: una transacción SQL no incluye un
-cargo remoto. Se propone tardío → reembolso simulado → sin emisión; deben
-probarse reinicios y duplicados en cada frontera de transición.
+## Bloqueos e idempotencia
 
-Reembolso, transferencia, anulación e ingreso compiten por el mismo estado del
-ticket. Se bloqueará el ticket y se releerá su estado, en vez de validar antes
-de la transacción. Un intento offline tardío se conserva aunque el estado haya
-cambiado; el resultado central explicita el conflicto, nunca reescribe el hecho
-local de que hubo una admisión.
+Compra adquiere primero advisory lock transaccional por actor/operación/clave. Después se toma zona antes de reservas, usuario/evento o ticket según operación. Transferencia y acceso bloquean ticket antes de resolver su estado. Si se revoca, el advisory lock global de revocaciones se toma después del ticket. Refresh/logout bloquean familia antes de sesión. Sync bloquea UUID antes de ticket. Nuevas rutas deben conservar este orden.
 
-## Accesos y cursor
+`Db.tx` reintenta hasta tres intentos totales para `40P01`/`40001`, con espera aleatoria breve, liberando cliente. Mitiga fallos transitorios; no demuestra ausencia de deadlocks ni permite efectos externos dentro de callbacks que pueden repetirse.
 
-Un UUID identifica un intento, no una petición HTTP. Reenviar el mismo UUID con
-el mismo contenido devuelve la decisión original; con contenido distinto es
-conflicto. `admissions` tiene unicidad por ticket/evento, independiente de su
-versión de credencial. El segundo intento localmente aceptado crea incidente,
-no una segunda admisión lógica ni la eliminación del intento.
+PK `(user_id,operation,key)` y SHA-256 de inputs normalizados con forma fija preservan idempotencia. Misma clave/payload recupera respuesta; diferente payload produce `IDEMPOTENCY_CONFLICT`. Errores con rollback no dejan respuesta. Una colisión de hash advisory causa contención adicional; la unicidad SQL sigue siendo necesaria.
 
-Las revocaciones usan secuencia del servidor, no timestamps del teléfono.
-Cursor y lote deben poder reintentarse; retención y recuperación mediante
-snapshot completo se definirán. Autenticación del dispositivo no vuelve
-confiable su reloj ni permite probar con certeza cuándo ocurrió un hecho offline.
+Cargo simulado, compra, entradas y respuesta comparten transacción. Unicidad del ledger también impide doble cargo con distintas claves para una misma reserva. Pago tardío registra `late_refund` una vez y no emite. No existe cargo remoto real: una futura pasarela requiere idempotencia externa, outbox y conciliación.
 
-Índices candidatos: reservas activas por expiración, tickets por evento/titular,
-sesiones por familia, intentos por dispositivo/UUID, revocaciones por secuencia,
-incidentes por evento/estado y auditoría por evento/tiempo. Se conservará un
-EXPLAIN real antes de justificar su coste de escritura o afirmar mejoras.
+Reembolso/anulación bloquean zona y ticket; rechazan uso, verifican permisos/plazo, cancelan pendientes, revocan versión y devuelven cupo. El reembolso corresponde al comprador original. Un ingreso físico offline recibido después de un reembolso se conserva como conflicto: SQL no puede deshacerlo físicamente.
+
+## Sincronización y evidencia
+
+UUID pertenece al intento, no al HTTP. Máximo 500 intentos/lote, confirmados en transacciones individuales. Reenviar tras fallo parcial no duplica los ya confirmados. Otro payload o dispositivo para UUID existente produce `id_conflict` e incidente sin cambiar el original.
+
+La PK central evento/ticket y el bloqueo del ticket arbitran ingreso, transferencia y reembolso. Segundo intento localmente aceptado genera `double_ingress`, conserva ambos resultados y señala que el orden físico es desconocido. El primero confirmado centralmente no demuestra ser el primero ocurrido.
+
+Cursores de revocación BIGINT se transmiten como string. Escritores toman advisory lock global **antes** de asignar ID, evitando una secuencia menor pendiente de commit detrás de otra visible. Lectura fija high-water mark antes de registros y pagina sin saltar commits. Cursor adelantado se rechaza y exige bootstrap.
+
+SQLite local usa WAL, índices de pendientes/uso y transacción exclusiva para aceptación previa + inserción. Confirmar sync añade resultado central y marca de envío, sin borrar intento ni reemplazar resultado local.
+
+## Índices y riesgos
+
+Expiración activa, fase por zona, familia de sesión y unicidades soportan integridad/consultas críticas. Rendimiento de portal requiere EXPLAIN real en QA. Índice de tickets empieza por titular/fecha, pero wallet pagina por ID: revisar plan antes de afirmar optimalidad. Coherencia evento/puerta/zona se valida en API y no está totalmente expresada con FKs compuestas. CHECK no detecta por sí solo cualquier divergencia de contadores: reconciliarlos contra filas reales en pruebas.

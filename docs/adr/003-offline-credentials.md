@@ -1,31 +1,17 @@
-# ADR 003 — Credencial del emisor y posesión rotativa
+# ADR 003 — Credencial emisora y posesión rotativa Ed25519
 
-**Estado:** propuesta; compatibilidad Expo/Ed25519 pendiente de ejecutar.
+**Estado:** adoptada; protocolo implementado. Compatibilidad en dispositivo Expo pendiente de evidencia real.
 
-**Contexto:** escáner valida sin red, QR antiguo debe caducar y móvil no recibe
-la clave privada del emisor. Una captura nunca puede impedirse por completo
-dentro de su propia ventana de validez.
+**Contexto:** validación sin red, QR antiguo caduca, privada del emisor nunca sale del servidor. Una captura vigente puede reproducirse durante su ventana.
 
-**Alternativas:** QR estático; secreto HMAC compartido con escáneres; firma del
-emisor sin posesión; credencial del emisor vinculada a clave del titular más
-prueba temporal firmada por el dispositivo.
+**Alternativas:** QR estático; HMAC compartido; firma emisora sin posesión; credencial ligada a clave titular más prueba temporal local.
 
-**Decisión:** proponer Ed25519 con dos firmas y separación de dominios. Credencial
-incluye identificador del emisor, ticket/evento, versión, vigencia y clave pública
-del titular. Prueba incluye hash de credencial, ventana temporal y contexto del
-protocolo. Codificación canónica y rechazo de campos/algoritmos desconocidos.
+**Decisión:** Ed25519 JS con @noble/curves 1.9.7. JSON QR contiene credencial firmada y prueba firmada por titular, con mensajes canónicos ASCII, orden fijo y separación de dominios. Se rechazan campos desconocidos, firmas inválidas y claves sin confianza. Credencial incluye versión, kid, ticket, evento, zona, vigencia y clave pública titular. Slots de 15 segundos: aceptar actual/anterior, nunca futuro; captura máxima menor de 30 segundos. Una captura de 60 segundos se rechaza.
 
-**Justificación:** el titular crea códigos nuevos sin obtener la privada del
-servidor; el escáner requiere solo claves públicas. Cambiar titular revoca la
-versión previa y vincula la credencial al dispositivo del receptor.
+Servidor conserva privada PKCS8/semilla de 32 bytes en runtime; móvil genera semilla de 32 bytes con Expo Crypto CSPRNG y guarda en SecureStore. Escáner recibe claves públicas durante bootstrap autenticado. Transferencia aceptada revoca versión y limpia vínculo de clave para receptor.
 
-**Riesgos:** almacenamiento local de la privada del titular, dispositivo
-comprometido, tamaño del QR, reloj manipulado y revocación desactualizada. Un
-QR vigente copiado puede reproducirse en otra puerta offline. No se promete
-prevención global offline; se detecta y audita al sincronizar. Expo SecureStore
-no garantiza por sí solo una clave Ed25519 hardware ni prueba soporte criptográfico.
+**Justificación:** titular puede generar códigos offline sin la privada emisora; escáner usa claves públicas. Biblioteca compartida evita divergir protocolo entre Node y móvil.
 
-**Validación:** spike pendiente en plataforma móvil seleccionada: generación
-con CSPRNG, firma/verificación interoperable servidor/móvil, persistencia segura,
-reinicio, lectura QR, límites de tamaño, reloj, firma alterada y captura antigua.
-Biblioteca y versiones no se darán por compatibles por pasar solo pruebas Node.
+**Riesgos:** SecureStore no garantiza clave Ed25519 hardware; semilla pasa por memoria JS. Reloj alterado, QR denso, captura vigente y revocación desconectada. Bootstrap requiere canal TLS confiable fuera de desarrollo. Reenrolamiento/rotación emisora necesitan operación explícita y convivencia de claves: kid por sí solo no acredita gestión completa de rotación.
+
+**Validación:** tests Node verifican lógica del protocolo, pero no cámara, SecureStore ni SQLite móvil. Ejecutar firma/verificación interoperable en Android/iOS, reinicio, lectura QR, densidad, reloj, firma alterada, captura 60 segundos y transferencia. No afirmar compatibilidad nativa por compilación o Metro solamente.

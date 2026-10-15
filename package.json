@@ -1,0 +1,23 @@
+{
+  "name": "hypernova-ticketing",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "engines": {"node": ">=22.0.0"},
+  "overrides": {"postcss": "8.5.30"},
+  "scripts": {
+    "build": "npm run build -w @hypernova/contracts && npm run build -w @hypernova/api && npm run build -w @hypernova/admin",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "test": "npm run test -w @hypernova/contracts",
+    "test:integration": "tsx --test --test-concurrency=1 tests/integration/*.test.ts",
+    "test:load": "tsx tests/load/race.ts",
+    "dev:api": "npm run dev -w @hypernova/api",
+    "dev:admin": "npm run dev -w @hypernova/admin",
+    "dev:mobile": "npm run build -w @hypernova/contracts && npm run start -w @hypernova/mobile"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2"
+  }
+}

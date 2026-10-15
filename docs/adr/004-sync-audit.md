@@ -1,27 +1,15 @@
-# ADR 004 — Intentos persistentes y arbitraje central del ingreso
+# ADR 004 — SQLite, evidencia inmutable y admisión central única
 
-**Estado:** propuesta, pendiente de enunciado y prototipo SQLite móvil.
+**Estado:** adoptada; almacenamiento y sync implementados. Validación móvil real pendiente.
 
-**Contexto:** miles de intentos offline, reinicios, reenvíos y dos puertas que
-aceptan la misma entrada sin poder comunicarse.
+**Contexto:** miles de intentos offline, reinicios, respuestas perdidas y puertas que pueden aceptar físicamente una entrada sin comunicarse.
 
-**Alternativas:** almacenamiento en memoria; listas en almacenamiento clave/valor;
-SQLite transaccional con UUID por intento y sincronización de lotes.
+**Alternativas:** memoria; listas clave/valor; SQLite transaccional y UUID por intento.
 
-**Decisión:** proponer SQLite para cola local, registro de cada intento y marcador
-único de admisión local. Servidor conserva resultado local y decisión central
-por separado. Unicidad central ticket/evento, UUID idempotente y revocaciones
-con cursor secuencial. Segundo aceptado offline crea incidente auditable.
+**Decisión:** SQLite WAL, índices y transacción exclusiva para rechazar segunda aceptación del dispositivo y registrar cada intento. UUID estable por intento; sync central por transacción individual (máximo 500/lote), hash de payload y respuesta durable. PK evento/ticket garantiza una admisión lógica. Resultados local y central se conservan separados; segundo aceptado offline produce incidente. Auditoría e historial central append-only con triggers y permisos restringidos. Revocaciones incrementales con cursor BIGINT string y escritores serializados antes de asignar secuencia.
 
-**Justificación:** reinicios y pérdida de respuesta no borran intentos ni los
-duplican. El conflicto queda visible y no se oculta alterando el historial.
+**Justificación:** pérdida de respuesta y reenvío no duplican; conflicto no desaparece al marcar sincronizado. Se preservan incluso tickets desconocidos. Una confirmación central no prueba orden físico.
 
-**Riesgos:** dos puertas offline pueden admitir físicamente al mismo titular;
-orden central de sincronización no prueba el primer ingreso físico. Reloj y
-declaración del dispositivo son evidencia no confiable. Batch debe definir
-límites, errores parciales y reintentos sin descartar fallos.
+**Riesgos:** dos puertas offline pueden admitir a la misma persona. Reloj y revocación declarados no son autoridad. Máxima antigüedad central 72 h configurable y futuro declarado 60 s. Cliente calibra con serverTime y bloquea snapshot vencido, pero necesita evidencia propia y no vuelve confiable un reloj alterado offline. Un lote parcialmente confirmado se reenvía conservando UUID. Los administradores DB pueden alterar privilegios/triggers; append-only protege rol aplicación, no superusuario.
 
-**Validación:** pendientes reinicio móvil, miles de filas, doble scan local,
-dos puertas offline, lote repetido, UUID con payload distinto, transferencia
-entre scan y sync y cursor antiguo. Auditoría central se probará con un rol
-de DB sin permiso UPDATE/DELETE; el administrador de DB sigue siendo privilegiado.
+**Validación:** doble scan local, persistencia tras reinicio y miles de filas en móvil; dos puertas offline, lote repetido, UUID/payload distinto, alcance ajeno, revocación y transferencia entre scan/sync. Intentar UPDATE/DELETE con rol runtime, probar commits de cursor fuera de orden y paginación. Evidencias ejecutadas en QA, sin equiparar tests centrales a prueba de hardware móvil.

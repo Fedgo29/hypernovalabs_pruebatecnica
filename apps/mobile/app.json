@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "name": "Hypernova Ticketing",
+    "slug": "hypernova-ticketing",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "ios": { "supportsTablet": true, "bundleIdentifier": "labs.hypernova.ticketing" },
+    "android": { "package": "labs.hypernova.ticketing" },
+    "plugins": [
+      ["expo-camera", { "cameraPermission": "Permite escanear las entradas en la puerta del evento.", "recordAudioAndroid": false }],
+      "expo-secure-store",
+      "expo-sqlite"
+    ]
+  }
+}

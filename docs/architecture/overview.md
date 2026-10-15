@@ -1,96 +1,66 @@
-# Arquitectura propuesta — Fase 1
+# Arquitectura de Ticketing y Control de Acceso
 
-**Estado: diseño inicial, no implementación; pendiente de contrastar con
-`enunciado.html`.** La dirección técnica fija NestJS, PostgreSQL, React Native,
-Expo y un portal separado. No existe código previo reutilizable.
+**Estado:** diseño adoptado y componentes implementados en esta rama. Su presencia no acredita pruebas: resultados ejecutados en `docs/qa/` y avances en `docs/progress/`. El enunciado fue recibido en la conversación; `docs/requirements/enunciado.md` conserva una síntesis identificada como tal, no el HTML original.
 
 ## Componentes
 
 ```mermaid
 flowchart LR
-  A[Expo: asistente] --> API[NestJS: API REST modular]
-  S[Expo: escáner + SQLite] -->|lotes y revocaciones| API
-  W[Portal React: contenedor propio] --> API
+  A[Expo: asistente y SecureStore] --> API[NestJS: REST /v1]
+  S[Expo: escáner y SQLite] -->|lotes y revocaciones| API
+  W[Portal React en Nginx] --> API
   API --> DB[(PostgreSQL)]
-  J[Worker de expiración y pagos: mismo código] --> DB
+  E[Expiración dentro de API] --> DB
   K[Clave privada del emisor: servidor] --> API
   API -->|credencial firmada| A
-  A -->|QR: credencial + prueba de posesión| S
+  A -->|QR con dos firmas| S
 ```
 
-El worker comparte módulos y base de datos del monolito; no constituye un
-microservicio de negocio. No se propone Redis. PostgreSQL conserva inventario,
-sesiones, reservas, pagos, tickets, revocaciones, accesos e historial.
+| Componente | Selección implementada | Responsabilidad |
+|---|---|---|
+| API | NestJS 11.2.7, TypeScript estricto, pg 8.16.3 | REST, autorización y transacciones |
+| Datos | PostgreSQL 16 | Inventario, ledger simulado, sesiones y evidencia |
+| Portal | React 19.1.0, Vite 7.3.7 | Administración desde API; contenedor independiente |
+| Móvil | Expo 54.0.37, React Native 0.81.5 | Asistente, cámara, QR y escáner offline |
+| Contratos | @hypernova/contracts compilado CommonJS | Tipos y protocolo Ed25519 compartido |
+| Criptografía | @noble/curves 1.9.7, @noble/hashes 1.8.0 | Firma/verificación JS; sin importar Node en móvil |
+| Persistencia móvil | Expo SQLite y SecureStore | Intentos/caché en SQLite; semillas privadas en SecureStore |
 
-Estructura prevista:
+La API es autoridad para identidad, permisos, precios, compras, titularidad y reconciliación. PostgreSQL es la fuente de verdad de operaciones críticas. El monolito modular tiene módulos Auth, Events/Admin, Commerce, Access y Operations. No se añade Redis ni un servicio de cola. El portal usa datos de la API, y el móvil distingue caché local de estado confirmado.
 
 ```text
-apps/api/              módulos NestJS, migraciones y worker
-apps/admin/            React + TypeScript, interfaz administrativa
-apps/mobile/           Expo + TypeScript, asistente y escáner
-packages/contracts/    contratos y tipos compartidos, sin secretos
-packages/shared/       funciones puras compartidas cuando sean necesarias
-infra/docker/          construcción y arranque
-tests/integration/     PostgreSQL real y escenarios API
-tests/load/            carga concurrente reproducible
-docs/                  decisiones, QA y progreso
+apps/api/              módulos NestJS, SQL y bootstrap
+apps/admin/            portal React + TypeScript
+apps/mobile/           Expo: asistente y escáner
+packages/contracts/    protocolo y tipos, sin secretos
+infra/data/            copia sanitizada del dataset
+infra/docker/          construcción, Nginx y entrypoint
+tests/                 integración y carga
+docs/                  requisitos, arquitectura, ADR y QA
 ```
 
-Se propone un workspace npm con lockfile, versiones fijadas al validar la
-compatibilidad y TypeScript estricto. La librería SQL y las versiones de Expo,
-NestJS y PostgreSQL se elegirán tras revisar el enunciado y el spike móvil; no
-hay manifiestos ni dependencias instaladas todavía.
+## Flujos y parámetros
 
-## Módulos y autoridad
+1. **Reserva:** normalizar zona/cantidad y clave idempotente; bloquear zona, liberar vencidas y bloquear contador usuario/evento. Precio desde fase activa. Inventario, reserva y respuesta idempotente se confirman juntos. TTL predeterminado: 600 segundos.
+2. **Pago:** zona y reserva bloqueadas; cargo simulado, compra, entradas y contadores en una transacción. Pago tardío registra `late_refund` una vez, sin emitir entradas.
+3. **Transferencia:** propuesta pendiente; aceptación cambia titular, incrementa versión y revoca la anterior. Credencial del receptor requiere conexión para vincular su clave pública. Cancelación resuelve pendientes.
+4. **Reembolso/anulación:** bloquear zona y ticket, revalidar uso/plazo/permisos, revocar y devolver cupo una sola vez. Conservar actor y motivo.
+5. **QR:** servidor firma ticket/evento/zona/versión/clave del titular; móvil firma prueba para slot de 15 segundos. Se acepta slot actual y anterior: una captura puede valer menos de 30 segundos. No se aceptan slots futuros.
+6. **Acceso local:** SQLite registra cada intento con UUID. Comprobación de aceptación previa e inserción ocurren en transacción exclusiva.
+7. **Sync:** cada UUID se confirma por separado; reintentos devuelven decisión previa. Una admisión central por ticket/evento. Segundo aceptado offline conserva evidencia y genera incidente.
 
-| Módulo | Responsabilidad |
-|---|---|
-| Identity | Registro, contraseña, sesiones, refresh rotativo y logout |
-| Authorization | Roles y alcance por evento/recurso; comprobación en cada operación |
-| Events | Eventos, zonas, puertas, fases y asignaciones de staff |
-| Reservations | Precio del servidor, aforo, límite por cuenta y expiración |
-| Payments | Pago/reembolso simulado con máquina de estados idempotente |
-| Tickets | Emisión, titularidad, transferencia, anulación y credenciales |
-| Access | Un ingreso lógico, intentos persistidos e incidentes |
-| Sync | Dispositivos, lotes idempotentes y revocaciones incrementales |
-| Audit | Registro de actor, motivo y transiciones en la misma transacción |
-| Reporting | Consultas autorizadas para el portal, paginación y reconciliación |
+La expiración se barre cada segundo en el proceso API y se recupera al reservar/pagar; su fuente es SQL, no el temporizador. Disponibilidad pública usa caché de 500 ms por instancia y cuenta solo reservas aún vigentes: es una lectura informativa, no una promesa de compra. Toda reserva revalida inventario en DB.
 
-Los controladores validan DTO, autenticación y permisos; los servicios de dominio
-aplican reglas; las transacciones contienen todas las escrituras relacionadas.
-El móvil nunca decide precio, autorización administrativa ni inventario.
+## Arranque y semilla
 
-## Flujos críticos
+Compose declara PostgreSQL, API, portal y job de secretos generados una vez en volumen privado. La API aplica migraciones y semilla bajo bloqueo DB antes de escuchar. Rol runtime no puede modificar auditoría ni historial de escáner. Healthchecks ordenan dependencias; readiness comprueba conexión a DB. El arranque completo solo queda probado al ejecutar Compose y comprobar sus servicios.
 
-1. **Reserva:** autenticar, validar payload y clave; obtener precio vigente del
-   servidor; bloquear inventario y límite por cuenta; crear reserva e historial
-   en una transacción. El servidor devuelve precio y expiración persistidos.
-2. **Pago:** mismo payload/clave devuelve mismo resultado. Estado, cobro simulado,
-   conversión de reserva y ticket se consolidan transaccionalmente. Una reserva
-   vencida no puede emitir ticket; propuesta de reembolso tardío idempotente.
-3. **QR:** API emite credencial ligada a clave pública del titular y versión de
-   ticket. Móvil firma una prueba temporal con su propia clave. Escáner valida
-   ambas firmas, evento, ventana temporal y revocaciones disponibles.
-4. **Acceso offline:** validación y registro local atómicos en SQLite. El UUID se
-   mantiene al reintentar sync. Los rechazos también se guardan. Un marcador
-   local impide una segunda aceptación lógica en ese dispositivo.
-5. **Sync:** el servidor autentica dispositivo/staff, conserva cada intento,
-   arbitra un solo ingreso lógico por ticket y registra conflictos. Responde
-   resultado por UUID y cursor de revocaciones; perder la respuesta es recuperable.
+El original aportado permanece fuera de Git. `infra/data/seed-ticketing.json` conserva filas/referencias con identidades sanitizadas; no publica contraseñas originales. IDs de usuario `rol-id` evitan colisiones entre colecciones. Las fechas se desplazan por un delta común respecto de un anchor de primera carga persistido en `seed_metadata`; no se desplazan otra vez en cada arranque. Es una adaptación temporal para demostración, no una carga literal sin cambios del original. Ver `docs/qa/dataset.md`.
 
-## Infraestructura prevista y datos
+JWT, privada del emisor y contraseña de demostración se generan o reciben de variables fuera de Git. La privada emisora admite semilla hexadecimal de 32 bytes o PKCS8 y permanece en servidor. El escáner descarga claves públicas mediante bootstrap autenticado; nunca confía en una clave emisora incluida por el QR.
 
-Compose tendrá PostgreSQL, job de migración/semilla, API, worker y portal. API no
-declara readiness hasta tener DB y esquema listos. La semilla usa claves estables
-y se ejecuta dos veces en validación. Los originales sensibles permanecen fuera
-de Git; la carga aceptará una ruta privada explícita o fixtures sintéticos
-sanitizados y documentados, sin reutilizar contraseñas originales.
+## Validación y límites
 
-`docker compose up` desde clon limpio exige que las semillas públicas puedan
-generarse sin el archivo privado. Debe comprobarse contra el enunciado si se
-requiere exactamente el dataset original; no se afirma haberlo cargado.
+Compilar y verificar Ed25519 en Node no demuestra compatibilidad en dispositivo Expo. Cámara, lectura QR, SecureStore, SQLite tras reinicio y miles de intentos necesitan evidencia móvil propia. El máximo central por defecto de antigüedad de lote es 72 horas (`SCANNER_MAX_OFFLINE_HOURS`); tolerancia de futuro declarada de 60 segundos diagnostica reloj, sin ampliar slots QR. El cliente calibra con `serverTime`, rechaza desfases mayores de 60 segundos al preparar/sincronizar y bloquea escaneo con snapshot vencido. Ese control usa el reloj del dispositivo y necesita validación móvil independiente; no prueba integridad del reloj offline.
 
-Los procesos no sobreviven necesariamente al snapshot del entorno. Cuando se
-implemente el flujo se guardarán instalación y arranque comprobados en la
-configuración de nube. Se usará el checkout aislado existente; no se necesita
-crear un worktree. Ahora no se guardan scripts ficticios de una app inexistente.
+Sin conexión entre puertas se garantiza un ingreso lógico central y detección posterior; no se impide todo doble ingreso físico. Rate limiting usa memoria por instancia: revisar antes de escalar horizontalmente. Se usa checkout aislado existente, sin worktrees salvo petición explícita; instrucciones de nube excluyen secretos.
