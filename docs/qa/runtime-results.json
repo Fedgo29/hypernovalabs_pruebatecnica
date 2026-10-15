@@ -1,0 +1,115 @@
+{
+  "startedAt": "2026-10-15T02:55:37.170Z",
+  "finishedAt": "2026-10-15T02:55:47.195Z",
+  "baseUrl": "http://127.0.0.1:3000",
+  "runId": "qa-1792032937170-d63eeb70",
+  "requiredRuntime": "HTTP API + PostgreSQL 16 through Docker Compose",
+  "nodeVersion": "v24.19.0",
+  "setupStatus": "passed",
+  "plannedScenarios": 18,
+  "overallPassed": true,
+  "fixtures": [
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26
+  ],
+  "passed": 18,
+  "failed": 0,
+  "scenarios": [
+    {
+      "name": "Registro aplica rol asistente, errores consistentes, logout invalida access y refresh",
+      "status": "passed",
+      "durationMs": 105.32652300000018
+    },
+    {
+      "name": "Refresh rota, revoca access anterior y replay invalida toda la familia",
+      "status": "passed",
+      "durationMs": 99.6063909999998
+    },
+    {
+      "name": "Doble toque concurrente reserva/pago: un cargo y una entrada; precio del servidor",
+      "status": "passed",
+      "durationMs": 324.1695219999999
+    },
+    {
+      "name": "Reserva vencida libera cupo; pago tardío reembolsa una sola vez sin emitir",
+      "status": "passed",
+      "durationMs": 584.4386629999999
+    },
+    {
+      "name": "Cancelación repetida libera inventario sin hacerlo negativo",
+      "status": "passed",
+      "durationMs": 306.3776250000001
+    },
+    {
+      "name": "Límite por cuenta se cumple con reservas concurrentes entre zonas del mismo evento",
+      "status": "passed",
+      "durationMs": 187.06243700000005
+    },
+    {
+      "name": "Autorización: organizador ajeno, reserva de otro usuario y escáner sin asignación",
+      "status": "passed",
+      "durationMs": 69.53517599999986
+    },
+    {
+      "name": "Código firmado funciona offline; captura de hace un minuto y firma alterada se rechazan",
+      "status": "passed",
+      "durationMs": 98.28705600000012
+    },
+    {
+      "name": "Transferencia aceptada revoca código anterior y el receptor genera material nuevo",
+      "status": "passed",
+      "durationMs": 146.441824
+    },
+    {
+      "name": "Dos puertas offline conservan doble ingreso como incidente; reenviar lote no duplica",
+      "status": "passed",
+      "durationMs": 516.7974129999998
+    },
+    {
+      "name": "Servidor rechaza QR expirado o alterado en lotes sin crear admisión",
+      "status": "passed",
+      "durationMs": 191.44623600000023
+    },
+    {
+      "name": "Reembolso idempotente libera cupo, revoca credencial y registra motivo/autor",
+      "status": "passed",
+      "durationMs": 532.4044710000007
+    },
+    {
+      "name": "Auditoría y evidencia de accesos no son editables por el rol de aplicación",
+      "status": "passed",
+      "durationMs": 330.7659189999995
+    },
+    {
+      "name": "Worker expira reservas sin tráfico de compra y recupera inventario una sola vez",
+      "status": "passed",
+      "durationMs": 1162.8470779999998
+    },
+    {
+      "name": "Carrera reembolso/ingreso nunca admite una entrada reembolsada ni reembolsa una usada",
+      "status": "passed",
+      "durationMs": 1002.863969
+    },
+    {
+      "name": "Precio queda congelado al reservar aunque cambie la fase antes de pagar",
+      "status": "passed",
+      "durationMs": 172.83828400000039
+    },
+    {
+      "name": "Restricción de PostgreSQL bloquea sobreaforo aun ante escritura directa incorrecta",
+      "status": "passed",
+      "durationMs": 260.6575469999998
+    },
+    {
+      "name": "Pago bloqueado por otra transacción cruza vencimiento: reembolsa sin emitir",
+      "status": "passed",
+      "durationMs": 2557.4233049999993
+    }
+  ],
+  "scope": "Automated API, database and signed offline protocol checks; no native camera/device or browser interaction is claimed."
+}

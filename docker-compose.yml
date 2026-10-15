@@ -1,0 +1,120 @@
+services:
+  secrets:
+    image: node:22-alpine
+    user: "0:0"
+    command:
+      - node
+      - -e
+      - |
+        const fs = require('node:fs'), crypto = require('node:crypto');
+        for (const name of ['postgres-password', 'app-password', 'jwt-secret', 'issuer-key', 'demo-password']) {
+          const path = (name === 'postgres-password' ? '/postgres-secrets/' : '/app-secrets/') + name;
+          if (!fs.existsSync(path)) fs.writeFileSync(path, crypto.randomBytes(32).toString('hex'), { mode: 0o600 });
+          fs.chmodSync(path, name === 'postgres-password' ? 0o444 : 0o400);
+          if (name !== 'postgres-password') fs.chownSync(path, 1000, 1000);
+        }
+        fs.chownSync('/runtime', 1000, 1000);
+    volumes:
+      - postgres-secrets:/postgres-secrets
+      - app-secrets:/app-secrets
+      - runtime:/runtime
+    restart: "no"
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: hypernova_owner
+      POSTGRES_DB: hypernova
+      POSTGRES_PASSWORD_FILE: /run/hypernova/postgres-password
+    depends_on:
+      secrets:
+        condition: service_completed_successfully
+    volumes:
+      - postgres-secrets:/run/hypernova:ro
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hypernova_owner -d hypernova"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  initialize:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      target: api
+      network: ${BUILD_NETWORK:-default}
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
+        NO_PROXY: ${NO_PROXY:-}
+    user: "0:0"
+    environment:
+      INITIALIZE_DATABASE: "1"
+      RUNTIME_DIR: /app/runtime
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - postgres-secrets:/run/postgres-secrets:ro
+      - app-secrets:/run/hypernova:ro
+      - runtime:/app/runtime
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      target: api
+      network: ${BUILD_NETWORK:-default}
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
+        NO_PROXY: ${NO_PROXY:-}
+    user: "1000:1000"
+    environment:
+      PORT: "3000"
+      NODE_ENV: production
+      INITIALIZE_DATABASE: "0"
+      RUNTIME_DIR: /app/runtime
+      RESERVATION_TTL_SECONDS: "${RESERVATION_TTL_SECONDS:-600}"
+    ports:
+      - "${API_PORT:-3000}:3000"
+    depends_on:
+      initialize:
+        condition: service_completed_successfully
+    volumes:
+      - app-secrets:/run/hypernova:ro
+      - runtime:/app/runtime
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/v1/readiness').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 3s
+      timeout: 3s
+      retries: 40
+
+  admin:
+    build:
+      context: .
+      dockerfile: infra/docker/Dockerfile
+      target: admin
+      network: ${BUILD_NETWORK:-default}
+      args:
+        HTTP_PROXY: ${HTTP_PROXY:-}
+        HTTPS_PROXY: ${HTTPS_PROXY:-}
+        NO_PROXY: ${NO_PROXY:-}
+    ports:
+      - "${ADMIN_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -Y off -q -O /dev/null http://127.0.0.1/"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  postgres-secrets:
+  app-secrets:
+  postgres:
+  runtime:

@@ -1,0 +1,2441 @@
+{
+  "account_limit_scenarios": {
+    "current_holder": {
+      "pairs_above_event_limit": 0,
+      "user_event_pairs": 1472
+    },
+    "original_buyer": {
+      "pairs_above_event_limit": 0,
+      "user_event_pairs": 1384
+    }
+  },
+  "audit_version": 1,
+  "checks": [
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "usuarios_administrativos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "usuarios_administrativos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "usuarios_administrativos"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_rol",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "usuarios_administrativos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "organizadores"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "organizadores"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "organizadores"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_rol",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "organizadores"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "staff"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "staff"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "staff"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_rol",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "staff"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_organizador_id_to_organizadores",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "staff"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "asistentes"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "asistentes"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "asistentes"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_rol",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "asistentes"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_estado",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_organizador_id_to_organizadores",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "zonas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "zonas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "zonas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_evento_id_to_eventos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "zonas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_fase",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_zona_id_to_zonas",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "puertas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "puertas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "puertas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_evento_id_to_eventos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "puertas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "asignaciones_staff"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_evento_id_to_eventos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "asignaciones_staff"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_staff_id_to_staff",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "asignaciones_staff"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_estado",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_asistente_id_to_asistentes",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_evento_id_to_eventos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_zona_id_to_zonas",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_fase_precio_id_to_fases_precio",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_estado",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_compra_id_to_compras",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_evento_id_to_eventos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_zona_id_to_zonas",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_titular_id_to_asistentes",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_comprador_id_to_asistentes",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_estado",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_entrada_id_to_entradas",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_de_usuario_id_to_asistentes",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_a_usuario_id_to_asistentes",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_resultado",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_entrada_id_to_entradas",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_evento_id_to_eventos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_puerta_id_to_puertas",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_staff_id_to_staff",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_noninteger_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "duplicate_primary_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "metadata_count_mismatch",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "unexpected_estado",
+      "count": 0,
+      "rule": "Enums observed in this fixture; not an official contract.",
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_asistente_id_to_asistentes",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "fk_zona_id_to_zonas",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "cross_role_identity_id_collisions",
+      "count": 32,
+      "rule": "IDs may be scoped to role tables; a unified user table needs a legacy ID mapping.",
+      "sample_numeric_ids": [
+        101,
+        201,
+        202,
+        203,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312
+      ],
+      "table": "identity_namespaces"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "relation_zona_id_evento_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "relation_fase_precio_id_zona_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "relation_compra_id_evento_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "relation_compra_id_zona_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "relation_compra_id_comprador_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "relation_entrada_id_evento_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "relation_puerta_id_evento_id",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "staff_organizer_different_from_event",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "asignaciones_staff"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "scan_staff_unassigned_to_event",
+      "count": 0,
+      "rule": "Assignment effective dates/history are not present.",
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "nonpositive_aforo",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "zonas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "nonpositive_cantidad",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "nonpositive_cantidad",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "nonpositive_limite_por_cuenta",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_money_precio_centesimos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_money_precio_unitario_centesimos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_money_monto_centesimos",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "purchase_total_arithmetic",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "purchase_price_differs_from_linked_phase",
+      "count": 0,
+      "rule": "Price snapshots can differ if a phase was edited after sale.",
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "purchase_quantity_differs_from_ticket_count",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "purchase_and_ticket_refund_state_mismatch",
+      "count": 0,
+      "rule": "Confirm whether refunds must cover every ticket in a purchase.",
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "used_ticket_without_exactly_one_valid_scan",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "valid_scan_ticket_not_used",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "multiple_valid_scans",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_timestamp_for_reembolsada",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_timestamp_for_aceptada",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "pending_transfer_has_resolution",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "self_transfer",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "last_accepted_transfer_differs_from_current_holder",
+      "count": 0,
+      "rule": "Assumes complete transfer history and no administrative ownership override.",
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "pending_transfer_sender_differs_from_current_holder",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "transferred_ticket_holder_equals_buyer",
+      "count": 0,
+      "rule": "Metadata describes transferida as held by another user.",
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "paid_ticket_holder_differs_from_buyer",
+      "count": 0,
+      "rule": "Metadata describes pagada as held by the buyer.",
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "missing_or_invalid_reference_timestamp",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "meta"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_creado_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "asistentes"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_fecha",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_venta_abre",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_reembolsable_hasta",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_desde",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_hasta",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_pagada_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_reembolsada_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_emitida_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "entradas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_creada_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_resuelta_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_escaneado_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_sincronizado_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_creada_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "invalid_timestamp_expira_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "time_order_venta_abre_fecha",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "time_order_reembolsable_hasta_fecha",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "eventos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "time_order_desde_hasta",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "fases_precio"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "time_order_pagada_en_reembolsada_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "time_order_creada_en_resuelta_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "transferencias"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "time_order_escaneado_en_sincronizado_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "time_order_creada_en_expira_en",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "payment_outside_phase_interval",
+      "count": 0,
+      "rule": "Uses [desde, hasta); actual price is locked at reservation, absent here.",
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "refund_after_event_deadline",
+      "count": 0,
+      "rule": "Cancellation/administrative exceptions are not documented.",
+      "sample_numeric_ids": [],
+      "table": "compras"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "scan_before_ticket_emission",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "ingresos"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "tickets_exceed_zone_capacity",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "zonas"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "stock_negative_including_live_reservations",
+      "count": 0,
+      "rule": "Fixture has no reservation-to-purchase link; avoid double counting on import.",
+      "sample_numeric_ids": [],
+      "table": "zonas"
+    },
+    {
+      "classification_if_nonzero": "contract_to_confirm",
+      "code": "active_reservation_expired_at_reference",
+      "count": 0,
+      "rule": "Expiration may be computed on read instead of persisting a state transition.",
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    },
+    {
+      "classification_if_nonzero": "confirmed_defect",
+      "code": "expired_reservation_still_future_at_reference",
+      "count": 0,
+      "sample_numeric_ids": [],
+      "table": "reservas"
+    }
+  ],
+  "counts": {
+    "asignaciones_staff": 27,
+    "asistentes": 600,
+    "compras": 1849,
+    "entradas": 3899,
+    "eventos": 9,
+    "fases_precio": 57,
+    "ingresos": 1762,
+    "organizadores": 3,
+    "puertas": 28,
+    "reservas": 320,
+    "staff": 12,
+    "transferencias": 176,
+    "usuarios_administrativos": 1,
+    "zonas": 19
+  },
+  "currency_is_usd": true,
+  "duplicate_counts": {
+    "all_identity_emails": {
+      "extra_rows": 0,
+      "groups": 0
+    },
+    "all_identity_ids": {
+      "extra_rows": 16,
+      "groups": 16
+    },
+    "asignaciones_staff": {
+      "extra_rows": 0,
+      "groups": 0
+    },
+    "asistentes": {
+      "email": {
+        "extra_rows": 0,
+        "groups": 0
+      }
+    },
+    "compras": {
+      "idempotency_key": {
+        "extra_rows": 0,
+        "groups": 0
+      }
+    },
+    "ingresos": {
+      "client_scan_id": {
+        "extra_rows": 0,
+        "groups": 0
+      }
+    },
+    "organizadores": {
+      "email": {
+        "extra_rows": 0,
+        "groups": 0
+      }
+    },
+    "staff": {
+      "email": {
+        "extra_rows": 0,
+        "groups": 0
+      }
+    },
+    "usuarios_administrativos": {
+      "email": {
+        "extra_rows": 0,
+        "groups": 0
+      }
+    }
+  },
+  "input_bytes": 2019134,
+  "input_sha256": "1682050bd01edf48bd269151885d0b5872b3fd1c903b5e0d7e2f6a8c3f0d34b9",
+  "inventory_assumption": "pagada, transferida and usada consume capacity; reembolsada releases it",
+  "known_enum_counts": {
+    "asignaciones_staff": {},
+    "asistentes": {
+      "rol": {
+        "asistente": 600,
+        "other_or_missing_count": 0
+      }
+    },
+    "compras": {
+      "estado": {
+        "other_or_missing_count": 0,
+        "pagada": 1739,
+        "reembolsada": 110
+      }
+    },
+    "entradas": {
+      "estado": {
+        "other_or_missing_count": 0,
+        "pagada": 1810,
+        "reembolsada": 235,
+        "transferida": 92,
+        "usada": 1762
+      }
+    },
+    "eventos": {
+      "estado": {
+        "en_venta": 4,
+        "finalizado": 3,
+        "other_or_missing_count": 0,
+        "proximo": 2
+      }
+    },
+    "fases_precio": {
+      "fase": {
+        "general": 19,
+        "other_or_missing_count": 0,
+        "preventa": 19,
+        "taquilla": 19
+      }
+    },
+    "ingresos": {
+      "resultado": {
+        "duplicado": 0,
+        "invalido": 0,
+        "other_or_missing_count": 0,
+        "valido": 1762
+      }
+    },
+    "organizadores": {
+      "rol": {
+        "organizador": 3,
+        "other_or_missing_count": 0
+      }
+    },
+    "puertas": {},
+    "reservas": {
+      "estado": {
+        "activa": 0,
+        "cancelada": 0,
+        "confirmada": 0,
+        "expirada": 320,
+        "other_or_missing_count": 0
+      }
+    },
+    "staff": {
+      "rol": {
+        "other_or_missing_count": 0,
+        "staff": 12
+      }
+    },
+    "transferencias": {
+      "estado": {
+        "aceptada": 175,
+        "cancelada": 0,
+        "other_or_missing_count": 0,
+        "pendiente": 1,
+        "rechazada": 0
+      }
+    },
+    "usuarios_administrativos": {
+      "rol": {
+        "admin": 1,
+        "other_or_missing_count": 0
+      }
+    },
+    "zonas": {}
+  },
+  "limitations": [
+    "Fixture consistency cannot prove transactional safety, authorization or offline behavior.",
+    "Expected enums and half-open price intervals require the official assignment contract.",
+    "Reservations have no purchase link, price snapshot or idempotency key.",
+    "Duplicate email/key counts do not prove uniqueness scope or authentication safety.",
+    "No signing keys, credentials, device records, revocation versions or incidents are modeled.",
+    "No amount represents an external payment-provider charge; all totals are fixture arithmetic."
+  ],
+  "live_active_reservation_count_at_reference": 0,
+  "metadata_edge_cases": {
+    "entrada_usada": {
+      "exists": true,
+      "is_used": true,
+      "valid_scan_count": 1
+    },
+    "evento_de_otro_organizador": {
+      "event_exists": true,
+      "organizer_exists": true,
+      "owner_is_different": true
+    },
+    "limite_por_cuenta_alcanzado": {
+      "expected_limit": 4,
+      "matches": true,
+      "nonrefunded_original_buyer_ticket_count": 4
+    },
+    "transferencia_pendiente": {
+      "exists": true,
+      "is_pending": true,
+      "resolution_is_null": true
+    },
+    "zona_ultimas_50": {
+      "capacity_matches_metadata": true,
+      "derived_remaining": 50,
+      "event_matches_metadata": true,
+      "expected_remaining": 50,
+      "matches": true,
+      "zone_exists": true
+    }
+  },
+  "password_representation_counts": {
+    "distinct_value_count": 4,
+    "no_recognized_hash_prefix": 616,
+    "recognized_hash_prefix": 0,
+    "string_values": 616
+  },
+  "phase_intervals": [
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 1
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 2
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 3
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 4
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 5
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 6
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 7
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 8
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 9
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 10
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 11
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 12
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 13
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 14
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 15
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 16
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 17
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 18
+    },
+    {
+      "gaps_between_adjacent_intervals": 0,
+      "overlapping_adjacent_intervals": 0,
+      "phase_count": 3,
+      "zona_id": 19
+    }
+  ],
+  "pricing_totals": {
+    "pagada": {
+      "amount_cents": 14626100,
+      "purchases": 1739,
+      "quantity": 3664
+    },
+    "reembolsada": {
+      "amount_cents": 1039380,
+      "purchases": 110,
+      "quantity": 235
+    }
+  },
+  "read_only": true,
+  "reference_timestamp": "2026-09-01T06:00:00+00:00",
+  "reservation_duration_seconds_counts": {
+    "600": 320
+  },
+  "schema": {
+    "asignaciones_staff": {
+      "evento_id": {
+        "null": 0,
+        "present": 27,
+        "types": {
+          "int": 27
+        }
+      },
+      "staff_id": {
+        "null": 0,
+        "present": 27,
+        "types": {
+          "int": 27
+        }
+      }
+    },
+    "asistentes": {
+      "creado_en": {
+        "null": 0,
+        "present": 600,
+        "types": {
+          "str": 600
+        }
+      },
+      "email": {
+        "null": 0,
+        "present": 600,
+        "types": {
+          "str": 600
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 600,
+        "types": {
+          "int": 600
+        }
+      },
+      "nombre": {
+        "null": 0,
+        "present": 600,
+        "types": {
+          "str": 600
+        }
+      },
+      "password": {
+        "null": 0,
+        "present": 600,
+        "types": {
+          "str": 600
+        }
+      },
+      "rol": {
+        "null": 0,
+        "present": 600,
+        "types": {
+          "str": 600
+        }
+      }
+    },
+    "compras": {
+      "asistente_id": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "int": 1849
+        }
+      },
+      "cantidad": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "int": 1849
+        }
+      },
+      "estado": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "str": 1849
+        }
+      },
+      "evento_id": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "int": 1849
+        }
+      },
+      "fase_precio_id": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "int": 1849
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "int": 1849
+        }
+      },
+      "idempotency_key": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "str": 1849
+        }
+      },
+      "monto_centesimos": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "int": 1849
+        }
+      },
+      "pagada_en": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "str": 1849
+        }
+      },
+      "precio_unitario_centesimos": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "int": 1849
+        }
+      },
+      "reembolsada_en": {
+        "null": 1739,
+        "present": 1849,
+        "types": {
+          "NoneType": 1739,
+          "str": 110
+        }
+      },
+      "zona_id": {
+        "null": 0,
+        "present": 1849,
+        "types": {
+          "int": 1849
+        }
+      }
+    },
+    "entradas": {
+      "compra_id": {
+        "null": 0,
+        "present": 3899,
+        "types": {
+          "int": 3899
+        }
+      },
+      "comprador_id": {
+        "null": 0,
+        "present": 3899,
+        "types": {
+          "int": 3899
+        }
+      },
+      "emitida_en": {
+        "null": 0,
+        "present": 3899,
+        "types": {
+          "str": 3899
+        }
+      },
+      "estado": {
+        "null": 0,
+        "present": 3899,
+        "types": {
+          "str": 3899
+        }
+      },
+      "evento_id": {
+        "null": 0,
+        "present": 3899,
+        "types": {
+          "int": 3899
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 3899,
+        "types": {
+          "int": 3899
+        }
+      },
+      "titular_id": {
+        "null": 0,
+        "present": 3899,
+        "types": {
+          "int": 3899
+        }
+      },
+      "zona_id": {
+        "null": 0,
+        "present": 3899,
+        "types": {
+          "int": 3899
+        }
+      }
+    },
+    "eventos": {
+      "codigo": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "str": 9
+        }
+      },
+      "estado": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "str": 9
+        }
+      },
+      "fecha": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "str": 9
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "int": 9
+        }
+      },
+      "limite_por_cuenta": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "int": 9
+        }
+      },
+      "nombre": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "str": 9
+        }
+      },
+      "organizador_id": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "int": 9
+        }
+      },
+      "recinto": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "str": 9
+        }
+      },
+      "reembolsable_hasta": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "str": 9
+        }
+      },
+      "venta_abre": {
+        "null": 0,
+        "present": 9,
+        "types": {
+          "str": 9
+        }
+      }
+    },
+    "fases_precio": {
+      "desde": {
+        "null": 0,
+        "present": 57,
+        "types": {
+          "str": 57
+        }
+      },
+      "fase": {
+        "null": 0,
+        "present": 57,
+        "types": {
+          "str": 57
+        }
+      },
+      "hasta": {
+        "null": 0,
+        "present": 57,
+        "types": {
+          "str": 57
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 57,
+        "types": {
+          "int": 57
+        }
+      },
+      "precio_centesimos": {
+        "null": 0,
+        "present": 57,
+        "types": {
+          "int": 57
+        }
+      },
+      "zona_id": {
+        "null": 0,
+        "present": 57,
+        "types": {
+          "int": 57
+        }
+      }
+    },
+    "ingresos": {
+      "client_scan_id": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "str": 1762
+        }
+      },
+      "entrada_id": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "int": 1762
+        }
+      },
+      "escaneado_en": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "str": 1762
+        }
+      },
+      "evento_id": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "int": 1762
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "int": 1762
+        }
+      },
+      "puerta_id": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "int": 1762
+        }
+      },
+      "resultado": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "str": 1762
+        }
+      },
+      "sincronizado_en": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "str": 1762
+        }
+      },
+      "staff_id": {
+        "null": 0,
+        "present": 1762,
+        "types": {
+          "int": 1762
+        }
+      }
+    },
+    "organizadores": {
+      "activo": {
+        "null": 0,
+        "present": 3,
+        "types": {
+          "bool": 3
+        }
+      },
+      "email": {
+        "null": 0,
+        "present": 3,
+        "types": {
+          "str": 3
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 3,
+        "types": {
+          "int": 3
+        }
+      },
+      "nombre": {
+        "null": 0,
+        "present": 3,
+        "types": {
+          "str": 3
+        }
+      },
+      "password": {
+        "null": 0,
+        "present": 3,
+        "types": {
+          "str": 3
+        }
+      },
+      "rol": {
+        "null": 0,
+        "present": 3,
+        "types": {
+          "str": 3
+        }
+      }
+    },
+    "puertas": {
+      "evento_id": {
+        "null": 0,
+        "present": 28,
+        "types": {
+          "int": 28
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 28,
+        "types": {
+          "int": 28
+        }
+      },
+      "nombre": {
+        "null": 0,
+        "present": 28,
+        "types": {
+          "str": 28
+        }
+      }
+    },
+    "reservas": {
+      "asistente_id": {
+        "null": 0,
+        "present": 320,
+        "types": {
+          "int": 320
+        }
+      },
+      "cantidad": {
+        "null": 0,
+        "present": 320,
+        "types": {
+          "int": 320
+        }
+      },
+      "creada_en": {
+        "null": 0,
+        "present": 320,
+        "types": {
+          "str": 320
+        }
+      },
+      "estado": {
+        "null": 0,
+        "present": 320,
+        "types": {
+          "str": 320
+        }
+      },
+      "expira_en": {
+        "null": 0,
+        "present": 320,
+        "types": {
+          "str": 320
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 320,
+        "types": {
+          "int": 320
+        }
+      },
+      "zona_id": {
+        "null": 0,
+        "present": 320,
+        "types": {
+          "int": 320
+        }
+      }
+    },
+    "staff": {
+      "activo": {
+        "null": 0,
+        "present": 12,
+        "types": {
+          "bool": 12
+        }
+      },
+      "email": {
+        "null": 0,
+        "present": 12,
+        "types": {
+          "str": 12
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 12,
+        "types": {
+          "int": 12
+        }
+      },
+      "nombre": {
+        "null": 0,
+        "present": 12,
+        "types": {
+          "str": 12
+        }
+      },
+      "organizador_id": {
+        "null": 0,
+        "present": 12,
+        "types": {
+          "int": 12
+        }
+      },
+      "password": {
+        "null": 0,
+        "present": 12,
+        "types": {
+          "str": 12
+        }
+      },
+      "rol": {
+        "null": 0,
+        "present": 12,
+        "types": {
+          "str": 12
+        }
+      }
+    },
+    "transferencias": {
+      "a_usuario_id": {
+        "null": 0,
+        "present": 176,
+        "types": {
+          "int": 176
+        }
+      },
+      "creada_en": {
+        "null": 0,
+        "present": 176,
+        "types": {
+          "str": 176
+        }
+      },
+      "de_usuario_id": {
+        "null": 0,
+        "present": 176,
+        "types": {
+          "int": 176
+        }
+      },
+      "entrada_id": {
+        "null": 0,
+        "present": 176,
+        "types": {
+          "int": 176
+        }
+      },
+      "estado": {
+        "null": 0,
+        "present": 176,
+        "types": {
+          "str": 176
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 176,
+        "types": {
+          "int": 176
+        }
+      },
+      "resuelta_en": {
+        "null": 1,
+        "present": 176,
+        "types": {
+          "NoneType": 1,
+          "str": 175
+        }
+      }
+    },
+    "usuarios_administrativos": {
+      "activo": {
+        "null": 0,
+        "present": 1,
+        "types": {
+          "bool": 1
+        }
+      },
+      "email": {
+        "null": 0,
+        "present": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 1,
+        "types": {
+          "int": 1
+        }
+      },
+      "nombre": {
+        "null": 0,
+        "present": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      "password": {
+        "null": 0,
+        "present": 1,
+        "types": {
+          "str": 1
+        }
+      },
+      "rol": {
+        "null": 0,
+        "present": 1,
+        "types": {
+          "str": 1
+        }
+      }
+    },
+    "zonas": {
+      "aforo": {
+        "null": 0,
+        "present": 19,
+        "types": {
+          "int": 19
+        }
+      },
+      "evento_id": {
+        "null": 0,
+        "present": 19,
+        "types": {
+          "int": 19
+        }
+      },
+      "id": {
+        "null": 0,
+        "present": 19,
+        "types": {
+          "int": 19
+        }
+      },
+      "nombre": {
+        "null": 0,
+        "present": 19,
+        "types": {
+          "str": 19
+        }
+      }
+    }
+  },
+  "sensitive_field_presence": {
+    "asignaciones_staff": {},
+    "asistentes": {
+      "email": {
+        "nonempty": 600,
+        "present": 600
+      },
+      "nombre": {
+        "nonempty": 600,
+        "present": 600
+      },
+      "password": {
+        "nonempty": 600,
+        "present": 600
+      }
+    },
+    "compras": {
+      "idempotency_key": {
+        "nonempty": 1849,
+        "present": 1849
+      }
+    },
+    "entradas": {},
+    "eventos": {
+      "nombre": {
+        "nonempty": 9,
+        "present": 9
+      }
+    },
+    "fases_precio": {},
+    "ingresos": {
+      "client_scan_id": {
+        "nonempty": 1762,
+        "present": 1762
+      }
+    },
+    "organizadores": {
+      "email": {
+        "nonempty": 3,
+        "present": 3
+      },
+      "nombre": {
+        "nonempty": 3,
+        "present": 3
+      },
+      "password": {
+        "nonempty": 3,
+        "present": 3
+      }
+    },
+    "puertas": {
+      "nombre": {
+        "nonempty": 28,
+        "present": 28
+      }
+    },
+    "reservas": {},
+    "staff": {
+      "email": {
+        "nonempty": 12,
+        "present": 12
+      },
+      "nombre": {
+        "nonempty": 12,
+        "present": 12
+      },
+      "password": {
+        "nonempty": 12,
+        "present": 12
+      }
+    },
+    "transferencias": {},
+    "usuarios_administrativos": {
+      "email": {
+        "nonempty": 1,
+        "present": 1
+      },
+      "nombre": {
+        "nonempty": 1,
+        "present": 1
+      },
+      "password": {
+        "nonempty": 1,
+        "present": 1
+      }
+    },
+    "zonas": {
+      "nombre": {
+        "nonempty": 19,
+        "present": 19
+      }
+    }
+  },
+  "summary": {
+    "checks_run": 138,
+    "confirmed_defect_affected_rows_across_checks": 0,
+    "confirmed_defect_checks": 0,
+    "contract_observation_checks": 1
+  },
+  "timestamp_summary": {
+    "asignaciones_staff": {},
+    "asistentes": {
+      "creado_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-08-22T06:00:00+00:00",
+        "min": "2024-10-01T06:00:00+00:00",
+        "nonnull": 600
+      }
+    },
+    "compras": {
+      "pagada_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-09-01T05:02:49+00:00",
+        "min": "2026-03-16T01:04:39+00:00",
+        "nonnull": 1849
+      },
+      "reembolsada_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-09-01T05:44:50+00:00",
+        "min": "2026-04-14T18:53:50+00:00",
+        "nonnull": 110
+      }
+    },
+    "entradas": {
+      "emitida_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-09-01T05:02:49+00:00",
+        "min": "2026-03-16T01:04:39+00:00",
+        "nonnull": 3899
+      }
+    },
+    "eventos": {
+      "fecha": {
+        "after_reference": 6,
+        "invalid_or_without_timezone": 0,
+        "max": "2027-03-15T01:00:00+00:00",
+        "min": "2026-06-14T01:00:00+00:00",
+        "nonnull": 9
+      },
+      "reembolsable_hasta": {
+        "after_reference": 6,
+        "invalid_or_without_timezone": 0,
+        "max": "2027-03-13T01:00:00+00:00",
+        "min": "2026-06-12T01:00:00+00:00",
+        "nonnull": 9
+      },
+      "venta_abre": {
+        "after_reference": 2,
+        "invalid_or_without_timezone": 0,
+        "max": "2027-01-14T01:00:00+00:00",
+        "min": "2026-03-16T01:00:00+00:00",
+        "nonnull": 9
+      }
+    },
+    "fases_precio": {
+      "desde": {
+        "after_reference": 20,
+        "invalid_or_without_timezone": 0,
+        "max": "2027-03-14T01:00:00+00:00",
+        "min": "2026-03-16T01:00:00+00:00",
+        "nonnull": 57
+      },
+      "hasta": {
+        "after_reference": 29,
+        "invalid_or_without_timezone": 0,
+        "max": "2027-03-15T07:00:00+00:00",
+        "min": "2026-04-05T01:00:00+00:00",
+        "nonnull": 57
+      }
+    },
+    "ingresos": {
+      "escaneado_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-08-24T00:59:00+00:00",
+        "min": "2026-06-13T23:30:00+00:00",
+        "nonnull": 1762
+      },
+      "sincronizado_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-08-24T03:49:00+00:00",
+        "min": "2026-06-13T23:34:00+00:00",
+        "nonnull": 1762
+      }
+    },
+    "organizadores": {},
+    "puertas": {},
+    "reservas": {
+      "creada_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-09-01T01:47:33+00:00",
+        "min": "2026-03-23T12:19:53+00:00",
+        "nonnull": 320
+      },
+      "expira_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-09-01T01:57:33+00:00",
+        "min": "2026-03-23T12:29:53+00:00",
+        "nonnull": 320
+      }
+    },
+    "staff": {},
+    "transferencias": {
+      "creada_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-09-01T04:00:00+00:00",
+        "min": "2026-04-05T22:04:39+00:00",
+        "nonnull": 176
+      },
+      "resuelta_en": {
+        "after_reference": 0,
+        "invalid_or_without_timezone": 0,
+        "max": "2026-09-01T00:54:56+00:00",
+        "min": "2026-04-05T22:52:39+00:00",
+        "nonnull": 175
+      }
+    },
+    "usuarios_administrativos": {},
+    "zonas": {}
+  },
+  "total_records": 8762,
+  "unit_is_integer_cents": true,
+  "zone_inventory": [
+    {
+      "capacity": 800,
+      "evento_id": 1,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 761,
+      "remaining_from_tickets": 39,
+      "remaining_with_live_reservations": 39,
+      "zona_id": 1
+    },
+    {
+      "capacity": 120,
+      "evento_id": 1,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 87,
+      "remaining_from_tickets": 33,
+      "remaining_with_live_reservations": 33,
+      "zona_id": 2
+    },
+    {
+      "capacity": 350,
+      "evento_id": 2,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 255,
+      "remaining_from_tickets": 95,
+      "remaining_with_live_reservations": 95,
+      "zona_id": 3
+    },
+    {
+      "capacity": 200,
+      "evento_id": 2,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 163,
+      "remaining_from_tickets": 37,
+      "remaining_with_live_reservations": 37,
+      "zona_id": 4
+    },
+    {
+      "capacity": 40,
+      "evento_id": 2,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 37,
+      "remaining_from_tickets": 3,
+      "remaining_with_live_reservations": 3,
+      "zona_id": 5
+    },
+    {
+      "capacity": 600,
+      "evento_id": 3,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 427,
+      "remaining_from_tickets": 173,
+      "remaining_with_live_reservations": 173,
+      "zona_id": 6
+    },
+    {
+      "capacity": 400,
+      "evento_id": 3,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 367,
+      "remaining_from_tickets": 33,
+      "remaining_with_live_reservations": 33,
+      "zona_id": 7
+    },
+    {
+      "capacity": 500,
+      "evento_id": 4,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 450,
+      "remaining_from_tickets": 50,
+      "remaining_with_live_reservations": 50,
+      "zona_id": 8
+    },
+    {
+      "capacity": 150,
+      "evento_id": 4,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 38,
+      "remaining_from_tickets": 112,
+      "remaining_with_live_reservations": 112,
+      "zona_id": 9
+    },
+    {
+      "capacity": 60,
+      "evento_id": 4,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 31,
+      "remaining_from_tickets": 29,
+      "remaining_with_live_reservations": 29,
+      "zona_id": 10
+    },
+    {
+      "capacity": 180,
+      "evento_id": 5,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 45,
+      "remaining_from_tickets": 135,
+      "remaining_with_live_reservations": 135,
+      "zona_id": 11
+    },
+    {
+      "capacity": 120,
+      "evento_id": 5,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 43,
+      "remaining_from_tickets": 77,
+      "remaining_with_live_reservations": 77,
+      "zona_id": 12
+    },
+    {
+      "capacity": 900,
+      "evento_id": 6,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 533,
+      "remaining_from_tickets": 367,
+      "remaining_with_live_reservations": 367,
+      "zona_id": 13
+    },
+    {
+      "capacity": 300,
+      "evento_id": 6,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 142,
+      "remaining_from_tickets": 158,
+      "remaining_with_live_reservations": 158,
+      "zona_id": 14
+    },
+    {
+      "capacity": 1000,
+      "evento_id": 7,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 215,
+      "remaining_from_tickets": 785,
+      "remaining_with_live_reservations": 785,
+      "zona_id": 15
+    },
+    {
+      "capacity": 200,
+      "evento_id": 7,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 70,
+      "remaining_from_tickets": 130,
+      "remaining_with_live_reservations": 130,
+      "zona_id": 16
+    },
+    {
+      "capacity": 700,
+      "evento_id": 8,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 0,
+      "remaining_from_tickets": 700,
+      "remaining_with_live_reservations": 700,
+      "zona_id": 17
+    },
+    {
+      "capacity": 300,
+      "evento_id": 9,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 0,
+      "remaining_from_tickets": 300,
+      "remaining_with_live_reservations": 300,
+      "zona_id": 18
+    },
+    {
+      "capacity": 150,
+      "evento_id": 9,
+      "live_active_reservation_quantity_at_reference": 0,
+      "nonrefunded_tickets": 0,
+      "remaining_from_tickets": 150,
+      "remaining_with_live_reservations": 150,
+      "zona_id": 19
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-14T21:19:27.696Z",
+  "reactNativeVersion": "0.81.5",
+  "browserBundle": true,
+  "hermesBytecodeCompilation": true,
+  "hermesRuntimeExecution": false,
+  "nativeCameraSecureStoreSQLite": "not_tested",
+  "status": "runtime_unavailable",
+  "reason": "The React Native SDK ships hermesc as a compiler-only binary; it explicitly rejects -exec. Set HERMES_RUNTIME to a matching Hermes runtime to execute this check."
+}

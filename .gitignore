@@ -1,0 +1,16 @@
+# Datos externos y configuración sensible: no versionar originales del dataset.
+.env
+.env.*
+!.env.example
+datos-prueba-ticketing.json
+**/datos-prueba-ticketing.json
+*.pem
+*.key
+
+# Salidas locales de desarrollo y auditoría.
+node_modules/
+dist/
+coverage/
+.expo/
+__pycache__/
+*.pyc
