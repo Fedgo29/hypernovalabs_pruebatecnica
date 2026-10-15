@@ -29,6 +29,21 @@ En esta nube, el proxy necesita DNS y CA de confianza dentro del constructor Doc
 
 El adaptador obtiene la dirección del proxy ya configurado y monta su CA solo durante la construcción. No guarda certificados, claves o valores del proxy en Git. En máquinas sin esa configuración usa Compose normal.
 
+## Arranque en Windows y saltos de línea
+
+El archivo puede existir pero tener CRLF en su shebang. Git fuerza LF en los
+scripts mediante `.gitattributes`, y la imagen normaliza el entrypoint antes de
+ejecutarlo para cubrir también clones anteriores. Actualiza la rama y reconstruye:
+
+```sh
+git pull --ff-only origin feat/ticketing-platform
+docker compose up -d --build --wait --wait-timeout 90
+curl -fsS http://127.0.0.1:3000/v1/readiness
+```
+
+No hace falta eliminar volúmenes. La advertencia de locale de PostgreSQL no es
+la causa de este error. Si persiste, consulta `docker compose logs initialize api`.
+
 ## Acceso de demostración
 
 Identidades sintéticas de la semilla:
