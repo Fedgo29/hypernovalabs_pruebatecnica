@@ -19,5 +19,5 @@ const measured=queries.map(item=>{
 }).sort((a,b)=>b.executionMs-a.executionMs);
 const counts=sql("SELECT json_build_object('events',(SELECT count(*) FROM events),'zones',(SELECT count(*) FROM zones),'tickets',(SELECT count(*) FROM tickets),'purchases',(SELECT count(*) FROM purchases),'reservations',(SELECT count(*) FROM reservations),'scanner_attempts',(SELECT count(*) FROM scanner_attempts))");
 const body=[`EXPLAIN real — ${new Date().toISOString()}`,`PostgreSQL: ${sql('SELECT version()')}`,`Filas al ejecutar: ${counts}`,`Evento con más tickets: ${eventId}`,'Comparación: cuatro consultas reales sobre la semilla + fixtures QA; ANALYZE previamente.','La consulta señalada es la más lenta de esta muestra medida, no una afirmación global sobre producción.',`Más lenta en esta muestra: ${measured[0]?.name} — ${measured[0]?.executionMs} ms`,'',...measured.flatMap(item=>[`${item.name} — ${item.executionMs} ms`,item.query,'',item.plan,''])].join('\n');
-mkdirSync('docs/qa',{recursive:true});writeFileSync('docs/qa/explain.txt',body+'\n');
+mkdirSync('docs/qa',{recursive:true});writeFileSync('docs/qa/explain.txt',body.trimEnd()+'\n');
 console.log(JSON.stringify({queries:measured.map(({name,executionMs})=>({name,executionMs})),report:'docs/qa/explain.txt'}));

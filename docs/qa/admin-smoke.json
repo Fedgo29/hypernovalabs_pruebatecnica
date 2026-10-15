@@ -1,0 +1,28 @@
+{
+  "status": "passed",
+  "validatedAt": "2026-10-15T02:59:27.347Z",
+  "origin": "http://127.0.0.1:8080",
+  "steps": [
+    "Login administrativo y carga de inventario real",
+    "Reporte de ingresos por puerta/hora coincide con la API",
+    "Incidentes y evidencia consultados sin errores",
+    "Vista móvil sin desbordamiento; menú y Escape conservan el foco",
+    "Crear evento con fechas, aforo por cuenta y propietario",
+    "Editar datos del evento",
+    "Crear zona y editar aforo sin alterar el inventario",
+    "Crear y editar fase con precio entero en centésimos",
+    "Crear y editar puerta vinculada a la zona",
+    "Asignar staff desde cuentas reales",
+    "Búsqueda de entradas reales por comprador y estados pagados",
+    "Reembolsar con motivo: revocación, cupo y neto financiero correctos",
+    "Anular con motivo libera cupo sin simular un reembolso monetario",
+    "Reportes de evento nuevo y estado vacío de dispositivos",
+    "Auditoría muestra autor y motivos de las operaciones",
+    "Retirar asignación de staff",
+    "Cerrar sesión invalida el acceso en el servidor y limpia la pestaña",
+    "Sin errores JavaScript, consola ni respuestas API fallidas en el recorrido"
+  ],
+  "browserErrors": [],
+  "consoleErrors": [],
+  "failedResponses": []
+}

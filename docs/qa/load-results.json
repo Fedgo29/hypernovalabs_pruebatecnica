@@ -1,0 +1,48 @@
+{
+  "runId": "qa-1792032910629-e515524a",
+  "startedAt": "2026-10-15T02:55:10.630Z",
+  "runtime": "Node fetch against actual NestJS HTTP API and PostgreSQL Docker Compose",
+  "baseUrl": "http://127.0.0.1:3000",
+  "concurrentBuyers": 200,
+  "initialRemainingTickets": 50,
+  "passed": true,
+  "fixture": {
+    "eventId": 19,
+    "zoneId": 30,
+    "initialCapacity": 50,
+    "initialSold": 0
+  },
+  "saleDurationMs": 1198.47,
+  "reservation": {
+    "samples": 200,
+    "p50Ms": 679.64,
+    "p95Ms": 908.52
+  },
+  "payment": {
+    "samples": 50,
+    "p50Ms": 663.12,
+    "p95Ms": 686.62
+  },
+  "expectedSoldOutResponses": 150,
+  "unexpectedErrors": [],
+  "successfulPayments": 50,
+  "database": {
+    "capacity": 50,
+    "sold": 50,
+    "reserved": 0,
+    "available": 0,
+    "tickets": 50,
+    "charges": 50,
+    "activeReservations": 0,
+    "inventoryViolations": 0
+  },
+  "availability": {
+    "samples": 500,
+    "p50Ms": 23.75,
+    "p95Ms": 36.96,
+    "requests": 500,
+    "concurrency": 50,
+    "durationMs": 245.48
+  },
+  "finishedAt": "2026-10-15T02:55:29.816Z"
+}

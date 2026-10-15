@@ -1,0 +1,217 @@
+EXPLAIN real — 2026-10-15T02:55:57.006Z
+PostgreSQL: PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+Filas al ejecutar: {"events" : 27, "zones" : 40, "tickets" : 3971, "purchases" : 1921, "reservations" : 404, "scanner_attempts" : 1778}
+Evento con más tickets: 1
+Comparación: cuatro consultas reales sobre la semilla + fixtures QA; ANALYZE previamente.
+La consulta señalada es la más lenta de esta muestra medida, no una afirmación global sobre producción.
+Más lenta en esta muestra: Ingresos administrativos por evento (AdminService.sales) — 1.365 ms
+
+Ingresos administrativos por evento (AdminService.sales) — 1.365 ms
+SELECT COALESCE(SUM(CASE WHEN t.state IN ('refunded','void') THEN 0 ELSE p.unit_price_cents END),0)::bigint AS total FROM tickets t JOIN purchases p ON p.id=t.purchase_id WHERE t.event_id=1
+
+Aggregate  (cost=220.71..220.72 rows=1 width=8) (actual time=1.312..1.313 rows=1 loops=1)
+  Output: COALESCE(sum(CASE WHEN (t.state = ANY ('{refunded,void}'::text[])) THEN 0 ELSE p.unit_price_cents END), '0'::bigint)
+  Buffers: shared hit=121
+  ->  Hash Join  (cost=78.22..216.22 rows=898 width=9) (actual time=0.690..1.244 rows=898 loops=1)
+        Output: t.state, p.unit_price_cents
+        Inner Unique: true
+        Hash Cond: (t.purchase_id = p.id)
+        Buffers: shared hit=121
+        ->  Seq Scan on public.tickets t  (cost=0.00..135.64 rows=898 width=18) (actual time=0.005..0.413 rows=898 loops=1)
+              Output: t.id, t.purchase_id, t.event_id, t.zone_id, t.holder_id, t.buyer_id, t.state, t.version, t.holder_public_key, t.issued_at, t.used_at
+              Filter: (t.event_id = 1)
+              Rows Removed by Filter: 3073
+              Buffers: shared hit=86
+        ->  Hash  (cost=54.21..54.21 rows=1921 width=18) (actual time=0.637..0.638 rows=1921 loops=1)
+              Output: p.unit_price_cents, p.id
+              Buckets: 2048  Batches: 1  Memory Usage: 111kB
+              Buffers: shared hit=35
+              ->  Seq Scan on public.purchases p  (cost=0.00..54.21 rows=1921 width=18) (actual time=0.002..0.207 rows=1921 loops=1)
+                    Output: p.unit_price_cents, p.id
+                    Buffers: shared hit=35
+Planning:
+  Buffers: shared hit=309
+Planning Time: 1.185 ms
+Execution Time: 1.365 ms
+
+Entradas administrativas con búsqueda textual (AdminService.tickets, alcance admin) — 0.645 ms
+SELECT t.id,t.event_id,e.name,t.zone_id,z.name,t.state,t.version,u.email,b.email,p.unit_price_cents FROM tickets t JOIN events e ON e.id=t.event_id JOIN zones z ON z.id=t.zone_id JOIN users u ON u.id=t.holder_id JOIN users b ON b.id=t.buyer_id JOIN purchases p ON p.id=t.purchase_id WHERE t.event_id=1 AND (u.email ILIKE '%asistente%' OR u.name ILIKE '%asistente%' OR b.email ILIKE '%asistente%' OR t.id ILIKE '%asistente%') ORDER BY t.id LIMIT 51
+
+Limit  (cost=1.28..92.28 rows=51 width=130) (actual time=0.123..0.495 rows=51 loops=1)
+  Output: t.id, t.event_id, e.name, t.zone_id, z.name, t.state, t.version, u.email, b.email, p.unit_price_cents
+  Buffers: shared hit=627
+  ->  Nested Loop  (cost=1.28..1603.66 rows=898 width=130) (actual time=0.122..0.489 rows=51 loops=1)
+        Output: t.id, t.event_id, e.name, t.zone_id, z.name, t.state, t.version, u.email, b.email, p.unit_price_cents
+        Inner Unique: true
+        Buffers: shared hit=627
+        ->  Nested Loop  (cost=0.99..1179.20 rows=898 width=139) (actual time=0.111..0.415 rows=51 loops=1)
+              Output: t.id, t.event_id, t.zone_id, t.state, t.version, t.purchase_id, e.name, z.name, u.email, b.email
+              Inner Unique: true
+              Join Filter: ((u.email ~~* '%asistente%'::text) OR (u.name ~~* '%asistente%'::text) OR (b.email ~~* '%asistente%'::text) OR (t.id ~~* '%asistente%'::text))
+              Buffers: shared hit=546
+              ->  Nested Loop  (cost=0.72..790.73 rows=898 width=126) (actual time=0.101..0.316 rows=51 loops=1)
+                    Output: t.id, t.event_id, t.zone_id, t.state, t.version, t.holder_id, t.purchase_id, e.name, z.name, b.email
+                    Inner Unique: true
+                    Buffers: shared hit=393
+                    ->  Nested Loop  (cost=0.43..569.64 rows=898 width=113) (actual time=0.088..0.233 rows=51 loops=1)
+                          Output: t.id, t.event_id, t.zone_id, t.state, t.version, t.holder_id, t.buyer_id, t.purchase_id, e.name, z.name
+                          Inner Unique: true
+                          Buffers: shared hit=312
+                          ->  Nested Loop  (cost=0.28..543.43 rows=898 width=100) (actual time=0.079..0.208 rows=51 loops=1)
+                                Output: t.id, t.event_id, t.zone_id, t.state, t.version, t.holder_id, t.buyer_id, t.purchase_id, e.name
+                                Buffers: shared hit=310
+                                ->  Index Scan using tickets_pkey on public.tickets t  (cost=0.28..530.87 rows=898 width=68) (actual time=0.068..0.182 rows=51 loops=1)
+                                      Output: t.id, t.purchase_id, t.event_id, t.zone_id, t.holder_id, t.buyer_id, t.state, t.version, t.holder_public_key, t.issued_at, t.used_at
+                                      Filter: (t.event_id = 1)
+                                      Rows Removed by Filter: 523
+                                      Buffers: shared hit=309
+                                ->  Materialize  (cost=0.00..1.34 rows=1 width=36) (actual time=0.000..0.000 rows=1 loops=51)
+                                      Output: e.name, e.id
+                                      Buffers: shared hit=1
+                                      ->  Seq Scan on public.events e  (cost=0.00..1.34 rows=1 width=36) (actual time=0.006..0.007 rows=1 loops=1)
+                                            Output: e.name, e.id
+                                            Filter: (e.id = 1)
+                                            Rows Removed by Filter: 26
+                                            Buffers: shared hit=1
+                          ->  Memoize  (cost=0.15..0.18 rows=1 width=17) (actual time=0.000..0.000 rows=1 loops=51)
+                                Output: z.name, z.id
+                                Cache Key: t.zone_id
+                                Cache Mode: logical
+                                Hits: 50  Misses: 1  Evictions: 0  Overflows: 0  Memory Usage: 1kB
+                                Buffers: shared hit=2
+                                ->  Index Scan using zones_pkey on public.zones z  (cost=0.14..0.17 rows=1 width=17) (actual time=0.006..0.006 rows=1 loops=1)
+                                      Output: z.name, z.id
+                                      Index Cond: (z.id = t.zone_id)
+                                      Buffers: shared hit=2
+                    ->  Memoize  (cost=0.29..0.42 rows=1 width=39) (actual time=0.001..0.001 rows=1 loops=51)
+                          Output: b.email, b.id
+                          Cache Key: t.buyer_id
+                          Cache Mode: logical
+                          Hits: 24  Misses: 27  Evictions: 0  Overflows: 0  Memory Usage: 4kB
+                          Buffers: shared hit=81
+                          ->  Index Scan using users_pkey on public.users b  (cost=0.28..0.41 rows=1 width=39) (actual time=0.002..0.002 rows=1 loops=27)
+                                Output: b.email, b.id
+                                Index Cond: (b.id = t.buyer_id)
+                                Buffers: shared hit=81
+              ->  Index Scan using users_pkey on public.users u  (cost=0.28..0.41 rows=1 width=63) (actual time=0.001..0.001 rows=1 loops=51)
+                    Output: u.id, u.email, u.password_hash, u.role, u.name, u.active, u.created_at
+                    Index Cond: (u.id = t.holder_id)
+                    Buffers: shared hit=153
+        ->  Memoize  (cost=0.29..0.52 rows=1 width=18) (actual time=0.001..0.001 rows=1 loops=51)
+              Output: p.unit_price_cents, p.id
+              Cache Key: t.purchase_id
+              Cache Mode: logical
+              Hits: 24  Misses: 27  Evictions: 0  Overflows: 0  Memory Usage: 4kB
+              Buffers: shared hit=81
+              ->  Index Scan using purchases_pkey on public.purchases p  (cost=0.28..0.51 rows=1 width=18) (actual time=0.002..0.002 rows=1 loops=27)
+                    Output: p.unit_price_cents, p.id
+                    Index Cond: (p.id = t.purchase_id)
+                    Buffers: shared hit=81
+Planning:
+  Buffers: shared hit=501
+Planning Time: 4.586 ms
+Execution Time: 0.645 ms
+
+Billetera paginada por cursor (CommerceService.tickets, primera página) — 0.604 ms
+SELECT t.id,t.event_id,e.name,t.zone_id,z.name,t.state,t.version,t.issued_at,t.purchase_id,p.unit_price_cents,t.holder_id FROM tickets t JOIN events e ON e.id=t.event_id JOIN zones z ON z.id=t.zone_id JOIN purchases p ON p.id=t.purchase_id WHERE t.holder_id='asistente-98' ORDER BY t.id LIMIT 51
+
+Limit  (cost=127.10..127.16 rows=21 width=112) (actual time=0.494..0.498 rows=21 loops=1)
+  Output: t.id, t.event_id, e.name, t.zone_id, z.name, t.state, t.version, t.issued_at, t.purchase_id, p.unit_price_cents, t.holder_id
+  Buffers: shared hit=57
+  ->  Sort  (cost=127.10..127.16 rows=21 width=112) (actual time=0.493..0.495 rows=21 loops=1)
+        Output: t.id, t.event_id, e.name, t.zone_id, z.name, t.state, t.version, t.issued_at, t.purchase_id, p.unit_price_cents, t.holder_id
+        Sort Key: t.id
+        Sort Method: quicksort  Memory: 30kB
+        Buffers: shared hit=57
+        ->  Hash Join  (cost=57.68..126.64 rows=21 width=112) (actual time=0.214..0.464 rows=21 loops=1)
+              Output: t.id, t.event_id, e.name, t.zone_id, z.name, t.state, t.version, t.issued_at, t.purchase_id, p.unit_price_cents, t.holder_id
+              Inner Unique: true
+              Hash Cond: (t.zone_id = z.id)
+              Buffers: shared hit=54
+              ->  Hash Join  (cost=55.78..124.68 rows=21 width=99) (actual time=0.187..0.433 rows=21 loops=1)
+                    Output: t.id, t.event_id, t.zone_id, t.state, t.version, t.issued_at, t.purchase_id, t.holder_id, e.name, p.unit_price_cents
+                    Inner Unique: true
+                    Hash Cond: (t.event_id = e.id)
+                    Buffers: shared hit=53
+                    ->  Hash Join  (cost=54.18..123.00 rows=21 width=67) (actual time=0.168..0.410 rows=21 loops=1)
+                          Output: t.id, t.event_id, t.zone_id, t.state, t.version, t.issued_at, t.purchase_id, t.holder_id, p.unit_price_cents
+                          Hash Cond: (p.id = t.purchase_id)
+                          Buffers: shared hit=52
+                          ->  Seq Scan on public.purchases p  (cost=0.00..54.21 rows=1921 width=18) (actual time=0.001..0.114 rows=1921 loops=1)
+                                Output: p.id, p.reservation_id, p.user_id, p.event_id, p.zone_id, p.quantity, p.unit_price_cents, p.amount_cents, p.state, p.paid_at, p.refunded_at
+                                Buffers: shared hit=35
+                          ->  Hash  (cost=53.91..53.91 rows=21 width=63) (actual time=0.142..0.143 rows=21 loops=1)
+                                Output: t.id, t.event_id, t.zone_id, t.state, t.version, t.issued_at, t.purchase_id, t.holder_id
+                                Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                                Buffers: shared hit=17
+                                ->  Bitmap Heap Scan on public.tickets t  (cost=4.44..53.91 rows=21 width=63) (actual time=0.029..0.074 rows=21 loops=1)
+                                      Output: t.id, t.event_id, t.zone_id, t.state, t.version, t.issued_at, t.purchase_id, t.holder_id
+                                      Recheck Cond: (t.holder_id = 'asistente-98'::text)
+                                      Heap Blocks: exact=15
+                                      Buffers: shared hit=17
+                                      ->  Bitmap Index Scan on tickets_holder_cursor  (cost=0.00..4.44 rows=21 width=0) (actual time=0.023..0.023 rows=21 loops=1)
+                                            Index Cond: (t.holder_id = 'asistente-98'::text)
+                                            Buffers: shared hit=2
+                    ->  Hash  (cost=1.27..1.27 rows=27 width=36) (actual time=0.010..0.010 rows=27 loops=1)
+                          Output: e.name, e.id
+                          Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                          Buffers: shared hit=1
+                          ->  Seq Scan on public.events e  (cost=0.00..1.27 rows=27 width=36) (actual time=0.002..0.004 rows=27 loops=1)
+                                Output: e.name, e.id
+                                Buffers: shared hit=1
+              ->  Hash  (cost=1.40..1.40 rows=40 width=17) (actual time=0.014..0.014 rows=40 loops=1)
+                    Output: z.name, z.id
+                    Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                    Buffers: shared hit=1
+                    ->  Seq Scan on public.zones z  (cost=0.00..1.40 rows=40 width=17) (actual time=0.004..0.007 rows=40 loops=1)
+                          Output: z.name, z.id
+                          Buffers: shared hit=1
+Planning:
+  Buffers: shared hit=441
+Planning Time: 1.932 ms
+Execution Time: 0.604 ms
+
+Disponibilidad por zona y fase vigente (EventsService.detail) — 0.207 ms
+SELECT z.id,z.name,z.capacity,z.sold_count AS sold,COALESCE(r.quantity,0)::int AS reserved,(z.capacity-z.sold_count-COALESCE(r.quantity,0))::int AS available,p.price_cents AS price_cents FROM zones z LEFT JOIN LATERAL(SELECT SUM(quantity) AS quantity FROM reservations WHERE zone_id=z.id AND state='active' AND expires_at>now()) r ON true LEFT JOIN LATERAL(SELECT price_cents FROM price_phases WHERE zone_id=z.id AND starts_at<=now() AND ends_at>now() ORDER BY starts_at DESC,id DESC LIMIT 1)p ON true WHERE z.event_id=1 ORDER BY z.id
+
+Sort  (cost=22.14..22.14 rows=2 width=37) (actual time=0.139..0.141 rows=2 loops=1)
+  Output: z.id, z.name, z.capacity, z.sold_count, ((COALESCE((sum(reservations.quantity)), '0'::bigint))::integer), ((((z.capacity - z.sold_count) - COALESCE((sum(reservations.quantity)), '0'::bigint)))::integer), price_phases.price_cents
+  Sort Key: z.id
+  Sort Method: quicksort  Memory: 25kB
+  Buffers: shared hit=11
+  ->  Nested Loop Left Join  (cost=10.26..22.13 rows=2 width=37) (actual time=0.097..0.111 rows=2 loops=1)
+        Output: z.id, z.name, z.capacity, z.sold_count, (COALESCE((sum(reservations.quantity)), '0'::bigint))::integer, (((z.capacity - z.sold_count) - COALESCE((sum(reservations.quantity)), '0'::bigint)))::integer, price_phases.price_cents
+        Buffers: shared hit=8
+        ->  Nested Loop Left Join  (cost=7.49..16.53 rows=2 width=33) (actual time=0.024..0.028 rows=2 loops=1)
+              Output: z.id, z.name, z.capacity, z.sold_count, (sum(reservations.quantity))
+              Buffers: shared hit=3
+              ->  Seq Scan on public.zones z  (cost=0.00..1.50 rows=2 width=25) (actual time=0.008..0.009 rows=2 loops=1)
+                    Output: z.id, z.event_id, z.name, z.capacity, z.sold_count, z.reserved_count
+                    Filter: (z.event_id = 1)
+                    Rows Removed by Filter: 38
+                    Buffers: shared hit=1
+              ->  Aggregate  (cost=7.49..7.50 rows=1 width=8) (actual time=0.008..0.008 rows=1 loops=2)
+                    Output: sum(reservations.quantity)
+                    Buffers: shared hit=2
+                    ->  Index Only Scan using reservations_zone_active on public.reservations  (cost=0.13..7.49 rows=1 width=4) (actual time=0.007..0.007 rows=0 loops=2)
+                          Output: reservations.zone_id, reservations.expires_at, reservations.quantity
+                          Index Cond: ((reservations.zone_id = z.id) AND (reservations.expires_at > now()))
+                          Heap Fetches: 0
+                          Buffers: shared hit=2
+        ->  Limit  (cost=2.76..2.77 rows=1 width=16) (actual time=0.024..0.025 rows=0 loops=2)
+              Output: price_phases.price_cents, price_phases.starts_at, price_phases.id
+              Buffers: shared hit=5
+              ->  Sort  (cost=2.76..2.77 rows=1 width=16) (actual time=0.023..0.023 rows=0 loops=2)
+                    Output: price_phases.price_cents, price_phases.starts_at, price_phases.id
+                    Sort Key: price_phases.starts_at DESC, price_phases.id DESC
+                    Sort Method: quicksort  Memory: 25kB
+                    Buffers: shared hit=5
+                    ->  Seq Scan on public.price_phases  (cost=0.00..2.75 rows=1 width=16) (actual time=0.005..0.005 rows=0 loops=2)
+                          Output: price_phases.price_cents, price_phases.starts_at, price_phases.id
+                          Filter: ((price_phases.zone_id = z.id) AND (price_phases.starts_at <= now()) AND (price_phases.ends_at > now()))
+                          Rows Removed by Filter: 78
+                          Buffers: shared hit=2
+Planning:
+  Buffers: shared hit=291
+Planning Time: 2.115 ms
+Execution Time: 0.207 ms

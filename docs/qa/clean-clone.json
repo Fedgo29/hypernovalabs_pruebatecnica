@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-15T02:58:31.950788+00:00",
+  "sourceCommit": "9a8acfdc51d39656fec692d5ee06f52fbefa415f",
+  "checkout": "clean local clone, no node_modules or generated application outputs",
+  "build": "scripts/cloud-compose.sh -p hypernova-clean-check up -d --build --wait --wait-timeout 90",
+  "ports": {
+    "api": 3301,
+    "admin": 8301
+  },
+  "health": {
+    "status": "ready"
+  },
+  "seedBefore": {
+    "users": 616,
+    "events": 9,
+    "zones": 19,
+    "tickets": 3899,
+    "purchases": 1849,
+    "reservations": 320,
+    "attempts": 1762,
+    "migrations": 4,
+    "anchor": "2026-10-15T02:56:28.286Z",
+    "remainingZone8": 50
+  },
+  "seedAfter": {
+    "users": 616,
+    "events": 9,
+    "zones": 19,
+    "tickets": 3899,
+    "purchases": 1849,
+    "reservations": 320,
+    "attempts": 1762,
+    "migrations": 4,
+    "anchor": "2026-10-15T02:56:28.286Z",
+    "remainingZone8": 50
+  },
+  "seedIdempotent": true,
+  "publicEvents": 9,
+  "portalHttpStatus": 200,
+  "passed": true,
+  "scope": "Verified in this cloud using its proxy CA/DNS adapter; default public-network build was not exercised here."
+}
