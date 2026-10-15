@@ -25,7 +25,7 @@ try {
   const admin = await login('admin.101@example.test');
   const fixture = await createFixture(admin,'organizador-201',{capacity:remainingTickets,limit:1,label:'200-buyers-50-tickets'});
   report.fixture = {eventId:fixture.eventId,zoneId:fixture.zoneIds[0],initialCapacity:remainingTickets,initialSold:0};
-  const emails = sql("SELECT email FROM users WHERE role='asistente' AND active=true ORDER BY id LIMIT 200").split('\n');
+  const emails = sql("SELECT email FROM users WHERE role='asistente' AND active=true AND id ~ '^asistente-[0-9]+$' ORDER BY id LIMIT 200").split('\n');
   assert.equal(emails.length,buyers);
   // Login is setup, outside measured sale. Sequential authentication avoids
   // benchmarking scrypt instead of purchase inventory concurrency.

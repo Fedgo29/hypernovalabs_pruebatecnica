@@ -49,7 +49,7 @@ export async function roleSessions(): Promise<{admin: AuthResponse; organizer: A
   const organizer = await login('organizador.201@example.test');
   const otherOrganizer = await login('organizador.202@example.test');
   const staff = await login('staff.301@example.test');
-  const emails = sql("SELECT email FROM users WHERE role='asistente' AND active=true ORDER BY id DESC LIMIT 6").split('\n');
+  const emails = sql("SELECT email FROM users WHERE role='asistente' AND active=true AND id ~ '^asistente-[0-9]+$' ORDER BY id DESC LIMIT 6").split('\n');
   const attendees = [];
   for (const email of emails) attendees.push(await login(email));
   return { admin, organizer, otherOrganizer, staff, attendees };

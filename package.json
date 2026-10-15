@@ -8,7 +8,7 @@
   "scripts": {
     "build": "npm run build -w @hypernova/contracts && npm run build -w @hypernova/api && npm run build -w @hypernova/admin",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "test": "npm run test -w @hypernova/contracts",
+    "test": "npm run test -w @hypernova/contracts && npm run test -w @hypernova/admin",
     "test:integration": "tsx --test --test-concurrency=1 tests/integration/*.test.ts",
     "test:load": "tsx tests/load/race.ts",
     "dev:api": "npm run dev -w @hypernova/api",
