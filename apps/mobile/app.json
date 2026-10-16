@@ -11,7 +11,8 @@
     "plugins": [
       ["expo-camera", { "cameraPermission": "Permite escanear las entradas en la puerta del evento.", "recordAudioAndroid": false }],
       "expo-secure-store",
-      "expo-sqlite"
+      "expo-sqlite",
+      "./plugins/with-emulator-http"
     ]
   }
 }

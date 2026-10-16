@@ -1,0 +1,13 @@
+{
+  "cli": { "version": ">= 25.0.0", "appVersionSource": "local" },
+  "build": {
+    "emulator": {
+      "distribution": "internal",
+      "android": { "buildType": "apk" },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://10.0.2.2:3000/v1",
+        "ALLOW_EMULATOR_HTTP": "1"
+      }
+    }
+  }
+}
