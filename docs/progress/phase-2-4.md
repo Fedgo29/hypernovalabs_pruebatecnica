@@ -1,6 +1,6 @@
 # Informe al Director Técnico — implementación y validación
 
-Ejecución del 14 de octubre de 2026 (America/Bogota). Los informes JSON conservan
+Ejecución del 14 de octubre de 2026 (America/Panama). Los informes JSON conservan
 las horas originales UTC del 15 de octubre. El commit `45e3d17` del usuario
 conservó la implementación; los ajustes posteriores preservan ese trabajo.
 

@@ -1,6 +1,6 @@
 # Verificación al preparar el portafolio
 
-Fecha: 16 de octubre de 2026 (America/Bogota). Base de código: `1e10dd9`; los cambios siguientes son documentación y PDF.
+Fecha: 16 de octubre de 2026 (America/Panama). Base de código: `1e10dd9`; los cambios siguientes son documentación y PDF.
 
 Ejecutado de nuevo en el entorno de desarrollo:
 

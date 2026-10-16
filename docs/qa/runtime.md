@@ -1,6 +1,6 @@
 # QA ejecutada con API y PostgreSQL reales
 
-Resultados de la ejecución del 14 de octubre de 2026 (America/Bogota); los JSON registran horas UTC del 15 de octubre.
+Resultados de la ejecución del 14 de octubre de 2026 (America/Panama); los JSON registran horas UTC del 15 de octubre.
 El backend se ejecutó en Docker Compose con PostgreSQL 16.15; el cliente de pruebas
 usó Node v24.19.0. Los informes describen esta máquina y estos datos, no una
 capacidad garantizada en producción.

@@ -14,7 +14,7 @@ Las marcas de la revisión histórica inferior describen el estado del día ante
 
 ---
 
-Revisión histórica del 15 de octubre de 2026 (America/Bogota). Fuente: enunciado completo aportado en la conversación, su síntesis y dirección técnica. Restricción actual del usuario: demostrar Android solo con emuladores en el PC; no usar teléfonos físicos.
+Revisión histórica del 15 de octubre de 2026 (America/Panama). Fuente: enunciado completo aportado en la conversación, su síntesis y dirección técnica. Restricción actual del usuario: demostrar Android solo con emuladores en el PC; no usar teléfonos físicos.
 
 **Cómo leerla:** `[x]` significa realizado en el alcance descrito; `[ ]` significa pendiente o sin evidencia suficiente. «Implementado» no equivale a «probado en Android». La confirmación del usuario acredita arranque Docker en Windows y acceso de demostración; no acredita por sí sola todos los flujos móviles.
 

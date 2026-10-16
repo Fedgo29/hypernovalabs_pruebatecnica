@@ -1,6 +1,6 @@
 # Hypernova Ticketing: memoria técnica y resultados
 
-Estado documentado: 16 de octubre de 2026 (America/Bogota). Proyecto de prueba técnica para venta de entradas y control de acceso. Este documento distingue resultados automatizados conservados en el repositorio, observaciones manuales del autor y escenarios aún pendientes.
+Estado documentado: 16 de octubre de 2026 (America/Panama). Proyecto de prueba técnica para venta de entradas y control de acceso. Este documento distingue resultados automatizados conservados en el repositorio, observaciones manuales del autor y escenarios aún pendientes.
 
 ## Presentación para el portafolio
 
