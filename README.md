@@ -42,7 +42,7 @@ scripts mediante `.gitattributes`, y la imagen normaliza el entrypoint antes de
 ejecutarlo para cubrir también clones anteriores. Actualiza la rama y reconstruye:
 
 ```sh
-git pull --ff-only origin feat/ticketing-platform
+git pull --ff-only origin main
 docker compose up -d --build --wait --wait-timeout 90
 curl -fsS http://127.0.0.1:3000/v1/readiness
 ```

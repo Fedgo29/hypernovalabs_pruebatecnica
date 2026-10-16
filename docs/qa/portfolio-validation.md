@@ -13,3 +13,5 @@ Ejecutado de nuevo en el entorno de desarrollo:
 No se repitieron integración, carga, pruebas móviles ni despliegue GCP durante esta actualización documental. Sus resultados se conservan con el alcance y procedencia descritos en la memoria, sin convertir observaciones del autor en nuevos informes automatizados.
 
 Los intentos de consultar visibilidad y pull requests mediante API de GitHub devolvieron `Forbidden`. El transporte Git se usa por separado para publicar la rama. No se deduce visibilidad pública a partir de acceso autenticado, ni se cambia la visibilidad, ni se integra main por esta actualización.
+
+Actualización de integración: el autor autorizó expresamente el merge a main después de esta verificación. Se realizó un merge sin conflictos conservando el historial; no se modifica la visibilidad del repositorio. Las instrucciones de arranque y el PDF ahora apuntan a main.

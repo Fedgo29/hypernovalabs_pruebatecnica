@@ -115,7 +115,7 @@ Para Android: [instrucciones de Expo](../apps/mobile/README.md), [APK mediante E
 - La vista de aforo muestra ingresos únicos sincronizados; no registra salidas ni representa ocupación física exacta.
 - El listado de transferencias está limitado a 100 sin cursor; otros listados principales sí tienen cursor.
 - La auditoría de dependencias histórica registró 35 avisos del workspace móvil/devtools. El filtro de producción API/portal dio cero avisos en esa medición; no equivale a monorepo sin vulnerabilidades.
-- Publicar la revisión final en `main`, verificar visibilidad pública y documentar la versión exacta entregada. Los cambios se preparan en `feat/ticketing-platform`.
+- Los cambios están integrados en `main`; queda verificar visibilidad pública y conservar el commit exacto de la entrega. La publicación de código no equivale a exponer la demo en Internet.
 - HTTPS público en GCP, CI, Wallet, push, lista de espera y asientos no se presentan como implementados.
 
 La demostración visual pendiente no se sustituye por este documento. El repositorio puede servir como portafolio con alcance y resultados transparentes, pero no se declara satisfecho todo el enunciado.

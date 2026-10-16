@@ -10,8 +10,8 @@ En PowerShell de **Windows**, ejecuta:
 
 ```powershell
 cd C:\Users\fedgo\Documents\Github\Hypernovalabs\hypernovalabs_pruebatecnica
-git switch feat/ticketing-platform
-git pull --ff-only origin feat/ticketing-platform
+git switch main
+git pull --ff-only origin main
 npm ci --ignore-scripts
 cd apps\mobile
 npx eas-cli@25.0.0 login

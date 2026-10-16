@@ -1,5 +1,10 @@
 # Checklist de entrega contra el enunciado
 
+## Integración de entrega
+
+- [x] Cambios de desarrollo integrados en `main` por autorización del autor: normalización Windows, despliegue VM, configuración APK, QR de 25 segundos y portafolio.
+- [ ] Confirmar que GitHub permite ver el repositorio sin iniciar sesión. No se cambió la visibilidad del repositorio desde esta sesión.
+
 ## Actualización del 16 de octubre de 2026
 
 - [x] API, portal y PostgreSQL levantados en GCP; acceso privado por túnel SSH y login admin/asistente confirmados por el autor.
@@ -8,7 +13,7 @@
 - [x] Rotación a 25 segundos, verificación de límites temporales en 8 pruebas criptográficas y contador actualizado confirmado en Android.
 - [x] Configuración EAS APK y documentación de operación publicadas en rama de desarrollo; no equivale a un APK ya generado.
 - [x] [Memoria para portafolio](../PORTAFOLIO.md) con alcance, pruebas y limitaciones.
-- [ ] Continúan pendientes el video/GIF de dos escáneres offline, validación nativa completa, APK terminado, importación del informe GCP, publicación final en main y visibilidad pública.
+- [ ] Continúan pendientes el video/GIF de dos escáneres offline, validación nativa completa, APK terminado, importación del informe GCP y confirmación de visibilidad pública.
 
 Las marcas de la revisión histórica inferior describen el estado del día anterior; esta actualización prevalece para cámara, GCP y duración del QR. Los informes históricos no se reescriben como si fueran pruebas de una revisión posterior.
 

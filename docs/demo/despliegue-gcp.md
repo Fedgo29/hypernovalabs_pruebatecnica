@@ -43,7 +43,7 @@ Necesitas Compose 2.24.4 o posterior. Se usa `sudo docker` para evitar cambiar l
 ## 4. Clonar y arrancar
 
 ```bash
-git clone --branch feat/ticketing-platform https://github.com/Fedgo29/hypernovalabs_pruebatecnica.git
+git clone --branch main https://github.com/Fedgo29/hypernovalabs_pruebatecnica.git
 cd hypernovalabs_pruebatecnica
 git log -1 --oneline
 sudo docker compose -f docker-compose.yml -f infra/docker/compose.vm.yml up -d --build --wait
@@ -51,7 +51,7 @@ sudo docker compose -f docker-compose.yml -f infra/docker/compose.vm.yml ps -a
 curl -fsS http://127.0.0.1:3000/v1/readiness
 ```
 
-La rama indicada contiene la configuración de VM; no se presupone que ya esté en `main`. Si GitHub responde `Repository not found`, comprueba acceso/visibilidad del repositorio y autentícate en la VM mediante GitHub CLI; no pegues tokens en comandos ni en el chat.
+La rama `main` contiene la configuración de VM y la documentación de entrega. Si GitHub responde `Repository not found`, comprueba acceso/visibilidad del repositorio y autentícate en la VM mediante GitHub CLI; no pegues tokens en comandos ni en el chat.
 
 Es normal que `secrets` e `initialize` terminen con código 0. API, portal y PostgreSQL deben quedar saludables. Si falla:
 
