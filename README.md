@@ -2,6 +2,8 @@
 
 Monolito modular NestJS + PostgreSQL, portal React independiente y app React Native + Expo con modos asistente y escáner. El enunciado se recibió en texto y está resumido en [requisitos](docs/requirements/enunciado.md).
 
+Para preparar la presentación: [guía de uso y grabación en emuladores Android](docs/demo/guia-video.md) y [checklist contra el enunciado, con pendientes reales](docs/demo/checklist-entrega.md).
+
 **Validación actual:** 18 pruebas de integración con PostgreSQL, 7 de protocolo criptográfico y 5 de sesiones del portal pasaron. La carrera HTTP de 200 compradores vendió exactamente 50 entradas, con 50 cargos, 150 respuestas de cupo agotado y cero reservas residuales. La ejecución nativa en un dispositivo, el APK/IPA y el video de dos escáneres siguen pendientes. Los bundles Android/iOS y el bytecode criptográfico compilan; eso no acredita cámara, SecureStore o SQLite nativos.
 
 ## Arranque desde un clon limpio
