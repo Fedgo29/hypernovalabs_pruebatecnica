@@ -1,3 +1,4 @@
+import { ROTATION_SECONDS } from '@hypernova/contracts';
 import {
   Inject,
   Body,
@@ -592,7 +593,7 @@ export class CommerceService implements OnModuleInit, OnModuleDestroy {
       credential: await signCredential(payload, issuerPrivateSeed),
       issuerPublicKey,
       keyId,
-      slotSeconds: 15,
+      slotSeconds: ROTATION_SECONDS,
     };
   }
   async transfer(

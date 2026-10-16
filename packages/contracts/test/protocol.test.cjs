@@ -25,6 +25,19 @@ test('one-minute screenshots and future slots are rejected', () => {
   assert.equal(protocol.verifyRotatingCode(f.raw, f.keys, f.now - 30, { eventId: 1 }).reason, 'expired');
   assert.equal(protocol.verifyRotatingCode(f.raw, f.keys, f.now + 15, { eventId: 1 }).valid, true);
 });
+test('rotation boundaries accept only current and previous intervals at every capture offset', () => {
+  const f = fixture();
+  const duration = protocol.ROTATION_SECONDS;
+  const start = Math.floor(f.now / duration) * duration;
+  for (let offset = 0; offset < duration; offset++) {
+    const capturedAt = start + offset;
+    const raw = protocol.signRotatingCode(f.credential, f.holder, capturedAt);
+    assert.equal(protocol.verifyRotatingCode(raw, f.keys, start + 2 * duration - 1, { eventId: 1 }).valid, true);
+    assert.equal(protocol.verifyRotatingCode(raw, f.keys, start + 2 * duration, { eventId: 1 }).reason, 'expired');
+    assert.equal(protocol.verifyRotatingCode(raw, f.keys, start - 1, { eventId: 1 }).reason, 'expired');
+    assert.equal(protocol.verifyRotatingCode(raw, f.keys, capturedAt + 60, { eventId: 1 }).reason, 'expired');
+  }
+});
 test('wrong event, wrong zone, and revoked credential are explicit', () => {
   const f = fixture();
   assert.equal(protocol.verifyRotatingCode(f.raw, f.keys, f.now, { eventId: 9 }).reason, 'wrong_event');

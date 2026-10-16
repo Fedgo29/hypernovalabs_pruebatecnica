@@ -1,7 +1,7 @@
 import { Inject, BadRequestException, ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { createHash, createPublicKey, randomUUID } from 'node:crypto';
 import { PoolClient } from 'pg';
-import { verifyRotatingCode } from '@hypernova/contracts';
+import { ROTATION_SECONDS, verifyRotatingCode } from '@hypernova/contracts';
 import { Db } from '../db';
 import { secrets } from '../runtime';
 import { dateValue, integer, stringValue } from '../validation';
@@ -97,7 +97,7 @@ export class AccessService {
       ...revoked,
       serverTime: new Date().toISOString(),
       maxOfflineHours: this.maxOfflineHours(),
-      rotationSeconds: 15,
+      rotationSeconds: ROTATION_SECONDS,
     };
   }
 

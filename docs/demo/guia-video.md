@@ -112,7 +112,7 @@ En el AVD Billetera:
 3. A entra en **Eventos** → **Ver zonas y comprar** → **Seleccionar zona**.
 4. Introduce cantidad 1 → **Reservar entradas**. Muestra el contador, importe y el incremento de reservas en el portal.
 5. Pulsa **Confirmar pago simulado**. Comprueba que la compra terminó y la reserva se convirtió en venta.
-6. En **Billetera** → **Ver entrada y código**, abre la entrada con red antes de desconectar. Espera un cambio del contador/QR (ventanas de 15 s).
+6. En **Billetera** → **Ver entrada y código**, abre la entrada con red antes de desconectar. Espera un cambio del contador/QR (ventanas de 25 s).
 7. Repite compras para disponer de tickets independientes. Anota el ID y uso de cada uno:
 
 | Ticket | Destino |
@@ -134,7 +134,7 @@ La app ofrece **Activar cámara**, **Sincronizar ahora**, contador de pendientes
 
 Para cámara sin teléfono físico, configura la cámara trasera del AVD como **VirtualScene**. En sus controles extendidos busca **Camera / Virtual scene images** y coloca una imagen PNG del QR en la pared/mesa de la escena. La ubicación/nombre del control depende de la versión del emulador; ensaya el encuadre antes del video. Captura únicamente el cuadrado del QR desde la billetera con Recortes de Windows; un screenshot completo puede volverlo demasiado pequeño para leerlo en la escena.
 
-Prepara ambos escáneres y encuadres de antemano. Para un QR válido usa una captura recién tomada y léela antes de que termine su ventana, que admite slot actual/anterior: menos de 30 s. Para el caso expirado conserva la imagen más de 60 s. Repite con una captura nueva si tardaste demasiado en cargarla; no amplíes la ventana criptográfica solo para grabar.
+Prepara ambos escáneres y encuadres de antemano. Para un QR válido usa una captura recién tomada y léela antes de que termine su ventana, que admite slot actual/anterior: menos de 50 s. Para el caso expirado conserva la imagen más de 60 s. Repite con una captura nueva si tardaste demasiado en cargarla; no amplíes la ventana criptográfica solo para grabar.
 
 Si capturas con ADB, no redirijas el PNG binario con `>` desde PowerShell antiguo: utiliza `shell screencap -p` a un archivo del dispositivo y luego `adb pull`. La prueba con imagen virtual demuestra la cámara del AVD leyendo un QR, no una cámara física. Una verificación por texto debe presentarse como manual, sin fingir que se usó cámara.
 
