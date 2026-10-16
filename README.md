@@ -2,7 +2,13 @@
 
 Monolito modular NestJS + PostgreSQL, portal React independiente y app React Native + Expo con modos asistente y escáner. El enunciado se recibió en texto y está resumido en [requisitos](docs/requirements/enunciado.md).
 
-**Validación actual:** 18 pruebas de integración con PostgreSQL, 7 de protocolo criptográfico y 5 de sesiones del portal pasaron. La carrera HTTP de 200 compradores vendió exactamente 50 entradas, con 50 cargos, 150 respuestas de cupo agotado y cero reservas residuales. La ejecución nativa en un dispositivo, el APK/IPA y el video de dos escáneres siguen pendientes. Los bundles Android/iOS y el bytecode criptográfico compilan; eso no acredita cámara, SecureStore o SQLite nativos.
+Para preparar la presentación: [guía de uso y grabación en emuladores Android](docs/demo/guia-video.md) y [checklist contra el enunciado, con pendientes reales](docs/demo/checklist-entrega.md).
+
+**Portafolio:** [memoria técnica y resultados](docs/PORTAFOLIO.md) · [descargar PDF](docs/Hypernova-memoria-tecnica.pdf) · [cómo abrir la instalación y reproducir pruebas](docs/demo/operacion-final.md) · [APK con EAS](docs/demo/apk-emulador.md).
+
+**Validación actual:** 8 pruebas criptográficas y 5 de sesiones web; informe histórico con 18 escenarios de integración PostgreSQL aprobados. El autor repitió en GCP la carrera de 200 compradores: 50 ventas, 150 agotados y cero errores inesperados. También confirmó login, QR renovado cada 25 s y cámara de emulador Android mostrando «Entrada válida». La prueba completa de dos escáneres offline, su video/GIF y un APK terminado siguen pendientes. [Alcance, métricas y evidencia disponible](docs/PORTAFOLIO.md).
+
+**Video/GIF:** pendiente. El clip de doble ingreso offline es un entregable del enunciado; la memoria técnica no lo sustituye. No se anuncia un enlace de demostración inexistente.
 
 ## Arranque desde un clon limpio
 
@@ -28,6 +34,21 @@ En esta nube, el proxy necesita DNS y CA de confianza dentro del constructor Doc
 ```
 
 El adaptador obtiene la dirección del proxy ya configurado y monta su CA solo durante la construcción. No guarda certificados, claves o valores del proxy en Git. En máquinas sin esa configuración usa Compose normal.
+
+## Arranque en Windows y saltos de línea
+
+El archivo puede existir pero tener CRLF en su shebang. Git fuerza LF en los
+scripts mediante `.gitattributes`, y la imagen normaliza el entrypoint antes de
+ejecutarlo para cubrir también clones anteriores. Actualiza la rama y reconstruye:
+
+```sh
+git pull --ff-only origin feat/ticketing-platform
+docker compose up -d --build --wait --wait-timeout 90
+curl -fsS http://127.0.0.1:3000/v1/readiness
+```
+
+No hace falta eliminar volúmenes. La advertencia de locale de PostgreSQL no es
+la causa de este error. Si persiste, consulta `docker compose logs initialize api`.
 
 ## Acceso de demostración
 
@@ -78,7 +99,7 @@ npm run dev:mobile
 - **Aforo:** PostgreSQL bloquea la fila de zona; restricciones impiden inventario negativo o superior al aforo. `account_inventory` serializa el límite por comprador y evento incluso entre zonas. Reserva aumenta reservadas; pago mueve cupo a vendidas; expiración, cancelación y reembolso liberan cupo. Transferir no libera el límite del comprador original; evita comprar y transferir para eludirlo.
 - **Pago único:** claves por usuario/operación, fingerprint del payload y bloqueo transaccional persistente. Repetir la clave conserva el resultado; cambiar su payload produce conflicto. Precio en centésimos fijado por el servidor al reservar. Pago simulado, ledger y emisión se confirman juntos. Pago tardío produce reembolso simulado idempotente y ninguna entrada. Una pasarela externa necesitaría idempotencia externa/outbox.
 - **Expiración:** TTL por defecto de 600 segundos, worker cada segundo y recuperación a demanda bajo bloqueo. Las filas sobreviven al reinicio. Se usa hora de PostgreSQL después de adquirir bloqueos para no aceptar un pago que esperó hasta después del vencimiento.
-- **Autenticidad:** credencial Ed25519 del servidor vinculada a clave pública del titular, más firma de posesión del dispositivo cada 15 segundos. Se admite ventana actual y anterior, menos de 30 segundos. La privada emisora permanece en el servidor; la semilla del titular se genera con Expo Crypto y se guarda en SecureStore. Transferir cambia versión/titular y revoca la credencial previa.
+- **Autenticidad:** credencial Ed25519 del servidor vinculada a clave pública del titular, más firma de posesión del dispositivo cada 25 segundos. Se admite ventana actual y anterior, menos de 50 segundos. La privada emisora permanece en el servidor; la semilla del titular se genera con Expo Crypto y se guarda en SecureStore. Transferir cambia versión/titular y revoca la credencial previa.
 - **Ingreso:** SQLite conserva cada intento y UUID; una transacción impide una segunda aceptación local para el evento/ticket. La API revalida y conserva los resultados local y central. Unicidad central por ticket/evento e incidente `double_ingress` para dos admisiones offline. Repetir el lote no duplica accesos.
 
 Dos puertas aisladas pueden admitir físicamente la misma entrada. El sistema detecta el conflicto al sincronizar y conserva la evidencia. Un escáner desconectado tampoco conoce revocaciones nuevas; aplica el snapshot disponible y exige renovar al vencer su límite offline. Las firmas no prueban la honestidad del reloj del dispositivo. Véanse [protocolo y riesgos](docs/security.md).
@@ -130,4 +151,4 @@ Evidencia: [integración y carga](docs/qa/runtime.md), [JSON de carga](docs/qa/l
 
 [Arquitectura](docs/architecture/overview.md) · [modelo transaccional](docs/architecture/data-model.md) · [ADR](docs/adr/README.md) · [matriz de requisitos](docs/requirements/matrix.md) · [auditoría inicial](docs/progress/phase-1.md) · [informe de implementación](docs/progress/phase-2-4.md).
 
-Pendientes explícitos: prueba nativa de cámara/SecureStore/SQLite y modo avión en dos dispositivos, grabación del video/GIF exigido y build instalable preferido. No se implementaron bonus de lista de espera, Wallet, push, asientos, WebSocket o despliegue público. No se declara completa la entrega nativa sin esa evidencia.
+Pendientes explícitos: dos escáneres Android offline, persistencia y revocación nativas completas, video/GIF exigido y APK instalable verificado. La cámara ya tuvo una lectura válida manual en emulador. Hay despliegue privado en GCP con túnel SSH, sin HTTPS público. También quedan detector de picos sospechosos, cursor de transferencias y revisión de avisos móviles; el aforo mostrado cuenta ingresos sincronizados sin salidas. Véase el [estado detallado y límites](docs/PORTAFOLIO.md).

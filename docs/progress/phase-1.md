@@ -1,6 +1,6 @@
 # Informe al Director Técnico — Fase 1
 
-**Fecha:** 14 de octubre de 2026 (America/Bogota).
+**Fecha:** 14 de octubre de 2026 (America/Panama).
 
 **Objetivo:** verificar el estado real, leer las fuentes, clasificar el dataset,
 trazar los requisitos y acordar una arquitectura antes de implementar.

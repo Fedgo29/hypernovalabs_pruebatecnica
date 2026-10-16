@@ -17,6 +17,7 @@ FROM build AS api
 COPY infra/data infra/data
 COPY infra/docker/api-entrypoint.sh /app/api-entrypoint.sh
 RUN mkdir -p /app/runtime \
+    && sed -i 's/\r$//' /app/api-entrypoint.sh \
     && chmod -R a+rX /app/apps /app/packages /app/node_modules /app/infra \
     && chmod a+r /app/package*.json \
     && chmod 755 /app/api-entrypoint.sh

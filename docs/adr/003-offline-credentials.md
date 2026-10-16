@@ -6,7 +6,7 @@
 
 **Alternativas:** QR estático; HMAC compartido; firma emisora sin posesión; credencial ligada a clave titular más prueba temporal local.
 
-**Decisión:** Ed25519 JS con @noble/curves 1.9.7. JSON QR contiene credencial firmada y prueba firmada por titular, con mensajes canónicos ASCII, orden fijo y separación de dominios. Se rechazan campos desconocidos, firmas inválidas y claves sin confianza. Credencial incluye versión, kid, ticket, evento, zona, vigencia y clave pública titular. Slots de 15 segundos: aceptar actual/anterior, nunca futuro; captura máxima menor de 30 segundos. Una captura de 60 segundos se rechaza.
+**Decisión:** Ed25519 JS con @noble/curves 1.9.7. JSON QR contiene credencial firmada y prueba firmada por titular, con mensajes canónicos ASCII, orden fijo y separación de dominios. Se rechazan campos desconocidos, firmas inválidas y claves sin confianza. Credencial incluye versión, kid, ticket, evento, zona, vigencia y clave pública titular. Slots de 25 segundos: aceptar actual/anterior, nunca futuro; captura máxima menor de 50 segundos. Una captura de 60 segundos se rechaza.
 
 Servidor conserva privada PKCS8/semilla de 32 bytes en runtime; móvil genera semilla de 32 bytes con Expo Crypto CSPRNG y guarda en SecureStore. Escáner recibe claves públicas durante bootstrap autenticado. Transferencia aceptada revoca versión y limpia vínculo de clave para receptor.
 

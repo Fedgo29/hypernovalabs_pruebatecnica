@@ -2,7 +2,7 @@ import { ed25519 } from '@noble/curves/ed25519';
 import { sha256 } from '@noble/hashes/sha256';
 import { bytesToHex, hexToBytes } from '@noble/hashes/utils';
 
-export const ROTATION_SECONDS = 15;
+export const ROTATION_SECONDS = 25;
 export interface CredentialPayload {
   v: 1;
   kid: string;

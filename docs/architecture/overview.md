@@ -45,7 +45,7 @@ docs/                  requisitos, arquitectura, ADR y QA
 2. **Pago:** zona y reserva bloqueadas; cargo simulado, compra, entradas y contadores en una transacción. Pago tardío registra `late_refund` una vez, sin emitir entradas.
 3. **Transferencia:** propuesta pendiente; aceptación cambia titular, incrementa versión y revoca la anterior. Credencial del receptor requiere conexión para vincular su clave pública. Cancelación resuelve pendientes.
 4. **Reembolso/anulación:** bloquear zona y ticket, revalidar uso/plazo/permisos, revocar y devolver cupo una sola vez. Conservar actor y motivo.
-5. **QR:** servidor firma ticket/evento/zona/versión/clave del titular; móvil firma prueba para slot de 15 segundos. Se acepta slot actual y anterior: una captura puede valer menos de 30 segundos. No se aceptan slots futuros.
+5. **QR:** servidor firma ticket/evento/zona/versión/clave del titular; móvil firma prueba para slot de 25 segundos. Se acepta slot actual y anterior: una captura puede valer menos de 50 segundos. No se aceptan slots futuros.
 6. **Acceso local:** SQLite registra cada intento con UUID. Comprobación de aceptación previa e inserción ocurren en transacción exclusiva.
 7. **Sync:** cada UUID se confirma por separado; reintentos devuelven decisión previa. Una admisión central por ticket/evento. Segundo aceptado offline conserva evidencia y genera incidente.
 

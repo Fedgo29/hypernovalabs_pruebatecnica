@@ -1,0 +1,10 @@
+{
+  "originalCRLF": {
+    "exitCode": 255,
+    "error": "exec /fixture/api-entrypoint.sh: no such file or directory"
+  },
+  "normalized": {
+    "exitCode": 0,
+    "stdout": "entrypoint_crlf_ok"
+  }
+}

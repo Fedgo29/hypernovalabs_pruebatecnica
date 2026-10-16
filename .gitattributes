@@ -1,0 +1,4 @@
+# Los scripts Linux deben conservar LF también al clonar desde Windows.
+*.sh text eol=lf
+Dockerfile text eol=lf
+*.yml text eol=lf

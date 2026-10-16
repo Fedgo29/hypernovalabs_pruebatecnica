@@ -1,5 +1,7 @@
 # Estrategia y estado de QA
 
+**Estado actual:** ver [memoria técnica](../PORTAFOLIO.md), [resultados de integración](runtime-results.json) y [validación móvil](mobile.md). Las notas siguientes describen la estrategia e inspección histórica inicial, no niegan las pruebas realizadas posteriormente.
+
 **Ejecutado en Fase 1:** inspección Git, comparación de fuentes adjuntas, revisión
 del dataset y verificación de herramientas locales. **No ejecutado:** suites de
 negocio, API, base de datos del proyecto, carga, Expo ni Compose de la aplicación.
