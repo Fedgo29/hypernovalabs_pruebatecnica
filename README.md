@@ -4,7 +4,11 @@ Monolito modular NestJS + PostgreSQL, portal React independiente y app React Nat
 
 Para preparar la presentación: [guía de uso y grabación en emuladores Android](docs/demo/guia-video.md) y [checklist contra el enunciado, con pendientes reales](docs/demo/checklist-entrega.md).
 
-**Validación actual:** 18 pruebas de integración con PostgreSQL, 7 de protocolo criptográfico y 5 de sesiones del portal pasaron. La carrera HTTP de 200 compradores vendió exactamente 50 entradas, con 50 cargos, 150 respuestas de cupo agotado y cero reservas residuales. La ejecución nativa en un dispositivo, el APK/IPA y el video de dos escáneres siguen pendientes. Los bundles Android/iOS y el bytecode criptográfico compilan; eso no acredita cámara, SecureStore o SQLite nativos.
+**Portafolio:** [memoria técnica y resultados](docs/PORTAFOLIO.md) · [descargar PDF](docs/Hypernova-memoria-tecnica.pdf) · [cómo abrir la instalación y reproducir pruebas](docs/demo/operacion-final.md) · [APK con EAS](docs/demo/apk-emulador.md).
+
+**Validación actual:** 8 pruebas criptográficas y 5 de sesiones web; informe histórico con 18 escenarios de integración PostgreSQL aprobados. El autor repitió en GCP la carrera de 200 compradores: 50 ventas, 150 agotados y cero errores inesperados. También confirmó login, QR renovado cada 25 s y cámara de emulador Android mostrando «Entrada válida». La prueba completa de dos escáneres offline, su video/GIF y un APK terminado siguen pendientes. [Alcance, métricas y evidencia disponible](docs/PORTAFOLIO.md).
+
+**Video/GIF:** pendiente. El clip de doble ingreso offline es un entregable del enunciado; la memoria técnica no lo sustituye. No se anuncia un enlace de demostración inexistente.
 
 ## Arranque desde un clon limpio
 
@@ -147,4 +151,4 @@ Evidencia: [integración y carga](docs/qa/runtime.md), [JSON de carga](docs/qa/l
 
 [Arquitectura](docs/architecture/overview.md) · [modelo transaccional](docs/architecture/data-model.md) · [ADR](docs/adr/README.md) · [matriz de requisitos](docs/requirements/matrix.md) · [auditoría inicial](docs/progress/phase-1.md) · [informe de implementación](docs/progress/phase-2-4.md).
 
-Pendientes explícitos: prueba nativa de cámara/SecureStore/SQLite y modo avión en dos dispositivos, grabación del video/GIF exigido y build instalable preferido. No se implementaron bonus de lista de espera, Wallet, push, asientos, WebSocket o despliegue público. No se declara completa la entrega nativa sin esa evidencia.
+Pendientes explícitos: dos escáneres Android offline, persistencia y revocación nativas completas, video/GIF exigido y APK instalable verificado. La cámara ya tuvo una lectura válida manual en emulador. Hay despliegue privado en GCP con túnel SSH, sin HTTPS público. También quedan detector de picos sospechosos, cursor de transferencias y revisión de avisos móviles; el aforo mostrado cuenta ingresos sincronizados sin salidas. Véase el [estado detallado y límites](docs/PORTAFOLIO.md).

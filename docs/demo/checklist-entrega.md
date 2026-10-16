@@ -1,6 +1,20 @@
 # Checklist de entrega contra el enunciado
 
-Revisión del 15 de octubre de 2026 (America/Bogota). Fuente: enunciado completo aportado en la conversación, su síntesis y dirección técnica. Restricción actual del usuario: demostrar Android solo con emuladores en el PC; no usar teléfonos físicos.
+## Actualización del 16 de octubre de 2026
+
+- [x] API, portal y PostgreSQL levantados en GCP; acceso privado por túnel SSH y login admin/asistente confirmados por el autor.
+- [x] Carga repetida en GCP: 200 compradores, 50 ventas, 150 agotados y cero errores inesperados; captura de la salida compartida. Falta importar el JSON original de esa VM al repositorio.
+- [x] Billetera y cámara virtual de otro emulador: lectura con resultado «Entrada válida» observada.
+- [x] Rotación a 25 segundos, verificación de límites temporales en 8 pruebas criptográficas y contador actualizado confirmado en Android.
+- [x] Configuración EAS APK y documentación de operación publicadas en rama de desarrollo; no equivale a un APK ya generado.
+- [x] [Memoria para portafolio](../PORTAFOLIO.md) con alcance, pruebas y limitaciones.
+- [ ] Continúan pendientes el video/GIF de dos escáneres offline, validación nativa completa, APK terminado, importación del informe GCP, publicación final en main y visibilidad pública.
+
+Las marcas de la revisión histórica inferior describen el estado del día anterior; esta actualización prevalece para cámara, GCP y duración del QR. Los informes históricos no se reescriben como si fueran pruebas de una revisión posterior.
+
+---
+
+Revisión histórica del 15 de octubre de 2026 (America/Bogota). Fuente: enunciado completo aportado en la conversación, su síntesis y dirección técnica. Restricción actual del usuario: demostrar Android solo con emuladores en el PC; no usar teléfonos físicos.
 
 **Cómo leerla:** `[x]` significa realizado en el alcance descrito; `[ ]` significa pendiente o sin evidencia suficiente. «Implementado» no equivale a «probado en Android». La confirmación del usuario acredita arranque Docker en Windows y acceso de demostración; no acredita por sí sola todos los flujos móviles.
 

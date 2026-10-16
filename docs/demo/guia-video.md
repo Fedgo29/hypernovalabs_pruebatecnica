@@ -199,7 +199,7 @@ npm run test:load
 npx --no-install tsx tests/load/explain.ts
 ```
 
-Cuenta de referencia: 7 tests criptográficos, 5 sesiones web y 18 integración. La carga autentica 200 compradores fuera de la medición y crea un evento QA aislado con 50 disponibles; no consume los 50 originales de la zona 8. Debe terminar con 50 ventas/tickets/cargos, 150 SOLD_OUT y cero errores inesperados/reservas residuales. Un 409 por agotamiento es esperado, no un fallo 500.
+Cuenta actual: 8 tests criptográficos y 5 sesiones web; informe histórico de 18 escenarios de integración. La carga autentica 200 compradores fuera de la medición y crea un evento QA aislado con 50 disponibles; no consume los 50 originales de la zona 8. Debe terminar con 50 ventas/tickets/cargos, 150 SOLD_OUT y cero errores inesperados/reservas residuales. Un 409 por agotamiento es esperado, no un fallo 500.
 
 ```powershell
 $r = Get-Content docs/qa/load-results.json -Raw | ConvertFrom-Json
