@@ -1,0 +1,15 @@
+# Demo privada en una VM. Acceder mediante túnel SSH, sin abrir 3000/8080.
+# Requiere Docker Compose >= 2.24.4 por !override.
+services:
+  postgres:
+    restart: unless-stopped
+  api:
+    restart: unless-stopped
+    ports: !override
+      - "127.0.0.1:${API_PORT:-3000}:3000"
+    environment:
+      CORS_ORIGINS: "http://localhost:${ADMIN_PORT:-8080},http://127.0.0.1:${ADMIN_PORT:-8080}"
+  admin:
+    restart: unless-stopped
+    ports: !override
+      - "127.0.0.1:${ADMIN_PORT:-8080}:80"
